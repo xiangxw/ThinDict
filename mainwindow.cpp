@@ -2,13 +2,15 @@
 #include <QWebView>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QShortcut>
 #include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_popup(false)
 {
     // setup ui
     ui->setupUi(this);
@@ -20,14 +22,26 @@ MainWindow::MainWindow(QWidget *parent) :
     // create tooltip widget
     toolTipWidget = new ToolTipWidget;
 
+    // create Esc shortcut
+    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+    connect(shortcut, SIGNAL(activated()),
+            this, SLOT(slotEsc()));
+
+    // create system tray icon
+    createSystemTrayIcon();
+
     connect(ui->wordLineEdit, SIGNAL(returnPressed()),
             this, SLOT(slotSearchRequested()));
     connect(ui->searchPushButton, SIGNAL(clicked()),
             this, SLOT(slotSearchRequested()));
     connect(toolTipWidget, SIGNAL(popupResultRequested()),
             this, SLOT(slotPopupResult()));
+    // select a word
     connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
             this, SLOT(slotSelectionChanged()));
+    // focus changed
+    connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)),
+            this, SLOT(slotFocusChanged(QWidget*,QWidget*)));
 }
 
 MainWindow::~MainWindow()
@@ -62,10 +76,77 @@ void MainWindow::slotPopupResult()
 {
     ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));
     slotSearchRequested();
-    this->move(QCursor::pos());
-    this->show();
-    this->activateWindow();
-    this->raise();
+
+    if (this->isHidden()) {
+        this->move(QCursor::pos());
+        this->show();
+    }
+    if (!this->isActiveWindow()) {
+        this->activateWindow();
+        this->raise();
+    }
+
+    m_popup = true;
+}
+
+/**
+ * @brief Call this when Esc is pressed.
+ */
+void MainWindow::slotEsc()
+{
+    this->hide();
+    m_popup = false;
+}
+
+
+/**
+ * @brief System tray is activated.
+ * @param reason Activate reason.
+ */
+void MainWindow::slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    // show or hide the window when it's not a popup window.
+    if (reason == QSystemTrayIcon::Trigger && !m_popup) {
+        if (this->isHidden() || !this->isActiveWindow()) {
+            this->show();
+            this->activateWindow();
+            this->raise();
+            m_popup = false;
+        } else {
+            this->hide();
+            m_popup = false;
+        }
+    }
+}
+
+/**
+ * @brief When the main window is not active.
+ * @param old Old widget.
+ * @param now New widget.
+ */
+void MainWindow::slotFocusChanged(QWidget *old, QWidget *now)
+{
+    if (old && old->window() == this // change focus from main window
+            && (!now || now->window() != this) // to another application
+            && m_popup) { // it's a popup window
+        toolTipWidget->hide();
+        this->hide();
+        m_popup = false;
+    }
+}
+
+/**
+ * @brief Create system tray icon.
+ */
+void MainWindow::createSystemTrayIcon()
+{
+    systemTray = new QSystemTrayIcon(QIcon(":/images/search.png"), this);
+    connect(systemTray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this, SLOT(slotSystemTrayActivated(QSystemTrayIcon::ActivationReason)));
+
+    // TODO add menu
+
+    systemTray->show();
 }
 
 ToolTipWidget::ToolTipWidget(QWidget *parent)

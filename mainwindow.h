@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSystemTrayIcon>
 
 namespace Ui {
 class MainWindow;
@@ -22,11 +23,18 @@ private slots:
     void slotSearchRequested();
     void slotSelectionChanged();
     void slotPopupResult();
+    void slotEsc();
+    void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
+    void slotFocusChanged(QWidget *old, QWidget *now);
 
 private:
+    void createSystemTrayIcon();
+
     Ui::MainWindow *ui;
     QWebView *webview;
     ToolTipWidget *toolTipWidget;
+    QSystemTrayIcon *systemTray;
+    bool m_popup; // whether this window is a popup or not
 };
 
 /**
