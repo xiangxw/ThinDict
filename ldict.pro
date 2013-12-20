@@ -6,7 +6,7 @@
 
 QT       += webkitwidgets
 
-TARGET = sdict
+TARGET = ldict
 TEMPLATE = app
 
 

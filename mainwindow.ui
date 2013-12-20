@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SDict</string>
+   <string>LDict</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -45,8 +45,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>380</width>
-         <height>249</height>
+         <width>382</width>
+         <height>253</height>
         </rect>
        </property>
       </widget>
