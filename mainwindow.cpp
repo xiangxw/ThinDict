@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QShortcut>
+#include <QMenu>
 #include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -140,12 +141,16 @@ void MainWindow::slotFocusChanged(QWidget *old, QWidget *now)
  */
 void MainWindow::createSystemTrayIcon()
 {
+    QMenu *menu;
+
     systemTray = new QSystemTrayIcon(QIcon(":/images/search.png"), this);
     connect(systemTray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(slotSystemTrayActivated(QSystemTrayIcon::ActivationReason)));
 
-    // TODO add menu
+    menu = new QMenu(this);
+    menu->addAction(tr("&Quit"), qApp, SLOT(quit()));
 
+    systemTray->setContextMenu(menu);
     systemTray->show();
 }
 
