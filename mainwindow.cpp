@@ -20,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
     webview = new QWebView(this);
     ui->resultScrollArea->setWidget(webview);
 
+    // enable flash for speech
+    QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
+
     // create tooltip widget
     toolTipWidget = new ToolTipWidget;
 
