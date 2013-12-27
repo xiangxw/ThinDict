@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(slotPopupResult()));
     // select a word
     connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
-            this, SLOT(slotSelectionChanged()));
+            this, SLOT(slotShowToolTip()));
     // focus changed
     connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)),
             this, SLOT(slotFocusChanged(QWidget*,QWidget*)));
@@ -70,7 +70,7 @@ void MainWindow::slotSearchRequested()
     webview->load(QUrl("http://dict.cn/mini.php?q=" + word));
 }
 
-void MainWindow::slotSelectionChanged()
+void MainWindow::slotShowToolTip()
 {
     QPoint point = QCursor::pos();
 
@@ -163,7 +163,6 @@ void MainWindow::createSystemTrayIcon()
 
 ToolTipWidget::ToolTipWidget(QWidget *parent)
     : QWidget(parent, Qt::ToolTip),
-      m_alpha(255),
       m_isOver(false)
 {
 }

@@ -21,7 +21,7 @@ public:
 
 private slots:
     void slotSearchRequested();
-    void slotSelectionChanged();
+    void slotShowToolTip();
     void slotPopupResult();
     void slotEsc();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
