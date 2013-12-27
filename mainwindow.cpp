@@ -74,7 +74,8 @@ void MainWindow::slotSelectionChanged()
 {
     QPoint point = QCursor::pos();
 
-    point.setY(point.y() - 24);
+    point.setX(point.x() - 12);
+    point.setY(point.y() - 36);
     toolTipWidget->move(point);
     toolTipWidget->show();
 }
@@ -173,7 +174,8 @@ void ToolTipWidget::paintEvent(QPaintEvent *e)
     (void)e;
 
     painter.begin(this);
-    painter.drawImage(0, 0, QImage(":/images/ldict.png"));
+    painter.drawImage(QRect(0, 0, this->sizeHint().width(), this->sizeHint().height()),
+                      QImage(":/images/ldict.png"));
 }
 
 void ToolTipWidget::enterEvent(QEvent *e)
