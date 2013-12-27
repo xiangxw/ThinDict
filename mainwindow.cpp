@@ -146,7 +146,7 @@ void MainWindow::createSystemTrayIcon()
 {
     QMenu *menu;
 
-    systemTray = new QSystemTrayIcon(QIcon(":/images/search.png"), this);
+    systemTray = new QSystemTrayIcon(QIcon(":/images/ldict.png"), this);
     connect(systemTray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(slotSystemTrayActivated(QSystemTrayIcon::ActivationReason)));
 
@@ -170,7 +170,7 @@ void ToolTipWidget::paintEvent(QPaintEvent *e)
     (void)e;
 
     painter.begin(this);
-    painter.drawImage(0, 0, QImage(":/images/search.png"));
+    painter.drawImage(0, 0, QImage(":/images/ldict.png"));
 }
 
 void ToolTipWidget::enterEvent(QEvent *e)
