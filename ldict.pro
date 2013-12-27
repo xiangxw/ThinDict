@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += webkitwidgets
+QT += core gui webkit
+greaterThan(QT_MAJOR_VERSION, 4): QT += webkitwidgets
 
 TARGET = ldict
 TEMPLATE = app

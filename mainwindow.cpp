@@ -5,6 +5,7 @@
 #include <QShortcut>
 #include <QMenu>
 #include <QTimer>
+#include <QClipboard>
 #include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
