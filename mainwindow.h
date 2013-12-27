@@ -21,13 +21,15 @@ public:
     ~MainWindow();
     QSize sizeHint() const {return QSize(400, 300);}
 
+protected:
+    virtual bool event(QEvent *event);
+
 private slots:
     void slotSearchRequested();
     void slotShowToolTip();
     void slotPopupResult();
     void slotEsc();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
-    void slotFocusChanged(QWidget *old, QWidget *now);
     void slotHideToolTipLater();
 
 private:

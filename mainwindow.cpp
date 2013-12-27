@@ -51,15 +51,23 @@ MainWindow::MainWindow(QWidget *parent) :
     // select a word
     connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
             this, SLOT(slotShowToolTip()));
-    // focus changed
-    connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)),
-            this, SLOT(slotFocusChanged(QWidget*,QWidget*)));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     delete toolTipWidget;
+}
+
+bool MainWindow::event(QEvent *event)
+{
+    // TODO do not hide when the popup window is moving
+    if (event->type() == QEvent::WindowDeactivate && m_popup) {
+        this->hide();
+        toolTipWidget->hide();
+        m_popup = false;
+    }
+    return QMainWindow::event(event);
 }
 
 void MainWindow::slotSearchRequested()
@@ -91,6 +99,7 @@ void MainWindow::slotPopupResult()
     ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));
     slotSearchRequested();
 
+    ensureAllRegionVisiable();
     if (this->isHidden()) {
         this->show();
     }
@@ -98,7 +107,6 @@ void MainWindow::slotPopupResult()
         this->activateWindow();
         this->raise();
     }
-    ensureAllRegionVisiable();
 
     m_popup = true;
 }
@@ -130,22 +138,6 @@ void MainWindow::slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reaso
             this->hide();
             m_popup = false;
         }
-    }
-}
-
-/**
- * @brief When the main window is not active.
- * @param old Old widget.
- * @param now New widget.
- */
-void MainWindow::slotFocusChanged(QWidget *old, QWidget *now)
-{
-    if (old && old->window() == this // change focus from main window
-            && (!now || now->window() != this) // to another application
-            && m_popup) { // it's a popup window
-        toolTipWidget->hide();
-        this->hide();
-        m_popup = false;
     }
 }
 
