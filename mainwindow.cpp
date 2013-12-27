@@ -34,6 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // create system tray icon
     createSystemTrayIcon();
 
+    // do not quit on close
+    this->setAttribute(Qt::WA_QuitOnClose, false);
+
     connect(ui->wordLineEdit, SIGNAL(returnPressed()),
             this, SLOT(slotSearchRequested()));
     connect(ui->searchPushButton, SIGNAL(clicked()),
