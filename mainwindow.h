@@ -19,6 +19,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    QSize sizeHint() const {return QSize(400, 300);}
 
 private slots:
     void slotSearchRequested();
@@ -31,6 +32,7 @@ private slots:
 
 private:
     void createSystemTrayIcon();
+    void ensureAllRegionVisiable();
 
     Ui::MainWindow *ui;
     QWebView *webview;

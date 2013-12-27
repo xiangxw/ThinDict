@@ -92,13 +92,13 @@ void MainWindow::slotPopupResult()
     slotSearchRequested();
 
     if (this->isHidden()) {
-        this->move(QCursor::pos());
         this->show();
     }
     if (!this->isActiveWindow()) {
         this->activateWindow();
         this->raise();
     }
+    ensureAllRegionVisiable();
 
     m_popup = true;
 }
@@ -173,6 +173,29 @@ void MainWindow::createSystemTrayIcon()
 
     systemTray->setContextMenu(menu);
     systemTray->show();
+}
+
+/**
+ * @brief Ensure that all region of the window is visiable
+ */
+void MainWindow::ensureAllRegionVisiable()
+{
+    QRect windowRect(QCursor::pos(), this->sizeHint());
+    QRect availableRect = qApp->desktop()->availableGeometry();
+
+    if (windowRect.left() < availableRect.left()) {
+        windowRect.moveLeft(availableRect.left());
+    }
+    if (windowRect.right() > availableRect.right()) {
+        windowRect.moveRight(availableRect.right());
+    }
+    if (windowRect.top() < availableRect.top()) {
+        windowRect.moveTop(availableRect.top());
+    }
+    if (windowRect.bottom() > availableRect.bottom()) {
+        windowRect.moveBottom(availableRect.bottom());
+    }
+    this->setGeometry(windowRect);
 }
 
 ToolTipWidget::ToolTipWidget(const QImage &image, QWidget *parent)
