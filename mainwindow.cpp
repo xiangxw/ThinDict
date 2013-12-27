@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(slotSearchRequested()));
     connect(ui->searchPushButton, SIGNAL(clicked()),
             this, SLOT(slotSearchRequested()));
-    connect(toolTipWidget, SIGNAL(popupResultRequested()),
+    connect(toolTipWidget, SIGNAL(enterToolTip()),
             this, SLOT(slotPopupResult()));
     // select a word
     connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
@@ -163,7 +163,8 @@ void MainWindow::createSystemTrayIcon()
 
 ToolTipWidget::ToolTipWidget(QWidget *parent)
     : QWidget(parent, Qt::ToolTip),
-    m_alpha(255)
+      m_alpha(255),
+      m_isOver(false)
 {
 }
 
@@ -182,5 +183,14 @@ void ToolTipWidget::enterEvent(QEvent *e)
 {
     (void)e;
 
-    emit popupResultRequested();
+    m_isOver = true;
+    emit enterToolTip();
+}
+
+void ToolTipWidget::leaveEvent(QEvent *e)
+{
+    (void)e;
+
+    m_isOver = true;
+    emit leaveToolTip();
 }

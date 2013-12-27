@@ -48,16 +48,23 @@ class ToolTipWidget : public QWidget
 public:
     ToolTipWidget(QWidget *parent = 0);
     QSize sizeHint() const {return QSize(24, 24);}
+    /**
+     * @brief Whether cursor is over the tooltip widget
+     */
+    bool isOver() const {return m_isOver;}
 
 signals:
-    void popupResultRequested();
+    void enterToolTip();
+    void leaveToolTip();
 
 protected:
     virtual void paintEvent(QPaintEvent *e);
     virtual void enterEvent(QEvent *e);
+    virtual void leaveEvent(QEvent *e);
 
 private:
     int m_alpha;
+    bool m_isOver;
 };
 
 #endif // MAINWINDOW_H
