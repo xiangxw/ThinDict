@@ -4,6 +4,7 @@
 #include <QDesktopWidget>
 #include <QShortcut>
 #include <QMenu>
+#include <QTimer>
 #include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -24,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
 
     // create tooltip widget
-    toolTipWidget = new ToolTipWidget;
+    toolTipWidget = new ToolTipWidget(QImage(":/images/ldict.png"));
 
     // create Esc shortcut
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
@@ -43,6 +44,10 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(slotSearchRequested()));
     connect(toolTipWidget, SIGNAL(enterToolTip()),
             this, SLOT(slotPopupResult()));
+    connect(toolTipWidget, SIGNAL(enterToolTip()),
+            toolTipWidget, SLOT(stopHiding()));
+    connect(toolTipWidget, SIGNAL(leaveToolTip()),
+            this, SLOT(slotHideToolTipLater()));
     // select a word
     connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
             this, SLOT(slotShowToolTip()));
@@ -78,6 +83,7 @@ void MainWindow::slotShowToolTip()
     point.setY(point.y() - 36);
     toolTipWidget->move(point);
     toolTipWidget->show();
+    slotHideToolTipLater();
 }
 
 void MainWindow::slotPopupResult()
@@ -144,6 +150,14 @@ void MainWindow::slotFocusChanged(QWidget *old, QWidget *now)
 }
 
 /**
+ * @brief Hide tooltip later
+ */
+void MainWindow::slotHideToolTipLater()
+{
+    toolTipWidget->hideLater(1500);
+}
+
+/**
  * @brief Create system tray icon.
  */
 void MainWindow::createSystemTrayIcon()
@@ -161,10 +175,31 @@ void MainWindow::createSystemTrayIcon()
     systemTray->show();
 }
 
-ToolTipWidget::ToolTipWidget(QWidget *parent)
+ToolTipWidget::ToolTipWidget(const QImage &image, QWidget *parent)
     : QWidget(parent, Qt::ToolTip),
-      m_isOver(false)
+      m_image(image)
 {
+    m_timer = new QTimer(this);
+}
+
+/**
+ * @brief Hide later
+ * @param msec Hide after msec milliseconds.
+ */
+void ToolTipWidget::hideLater(int sec)
+{
+    disconnect(m_timer, 0, 0, 0);
+
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(hide()));
+    m_timer->start(sec);
+}
+
+/**
+ * @brief Stop hiding corresponding to hideLater().
+ */
+void ToolTipWidget::stopHiding()
+{
+    disconnect(m_timer, 0, 0, 0);
 }
 
 void ToolTipWidget::paintEvent(QPaintEvent *e)
@@ -175,14 +210,13 @@ void ToolTipWidget::paintEvent(QPaintEvent *e)
 
     painter.begin(this);
     painter.drawImage(QRect(0, 0, this->sizeHint().width(), this->sizeHint().height()),
-                      QImage(":/images/ldict.png"));
+                      m_image);
 }
 
 void ToolTipWidget::enterEvent(QEvent *e)
 {
     (void)e;
 
-    m_isOver = true;
     emit enterToolTip();
 }
 
@@ -190,6 +224,5 @@ void ToolTipWidget::leaveEvent(QEvent *e)
 {
     (void)e;
 
-    m_isOver = true;
     emit leaveToolTip();
 }

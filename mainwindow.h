@@ -10,6 +10,7 @@ class MainWindow;
 
 class ToolTipWidget;
 class QWebView;
+class QTimer;
 
 class MainWindow : public QMainWindow
 {
@@ -26,6 +27,7 @@ private slots:
     void slotEsc();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void slotFocusChanged(QWidget *old, QWidget *now);
+    void slotHideToolTipLater();
 
 private:
     void createSystemTrayIcon();
@@ -46,12 +48,20 @@ class ToolTipWidget : public QWidget
     Q_OBJECT
 
 public:
-    ToolTipWidget(QWidget *parent = 0);
+    ToolTipWidget(const QImage &image, QWidget *parent = 0);
     QSize sizeHint() const {return QSize(24, 24);}
+    void hideLater(int msec);
     /**
-     * @brief Whether cursor is over the tooltip widget
+     * @brief Set image
      */
-    bool isOver() const {return m_isOver;}
+    void setImage(const QImage &image)
+    {
+        m_image = image;
+        this->update();
+    }
+
+public slots:
+    void stopHiding();
 
 signals:
     void enterToolTip();
@@ -63,8 +73,8 @@ protected:
     virtual void leaveEvent(QEvent *e);
 
 private:
-    int m_alpha;
-    bool m_isOver;
+    QImage m_image;
+    QTimer *m_timer;
 };
 
 #endif // MAINWINDOW_H
