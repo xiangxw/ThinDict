@@ -88,6 +88,10 @@ void MainWindow::slotShowToolTip()
 {
     QPoint point = QCursor::pos();
 
+    if (QApplication::clipboard()->text(QClipboard::Selection).isEmpty()) {
+        return;
+    }
+
     point.setX(point.x() - 12);
     point.setY(point.y() - 36);
     toolTipWidget->move(point);
