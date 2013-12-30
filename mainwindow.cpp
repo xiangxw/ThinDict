@@ -8,6 +8,7 @@
 #include <QClipboard>
 #include <QMovie>
 #include <QX11Info>
+#include <QToolTip>
 #include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -131,8 +132,12 @@ void MainWindow::slotLoadFinished(bool ok)
             this->raise();
         }
         m_popup = true;
+        toolTipWidget->hide();
+    } else {
+        m_popup = false;
+        slotHideToolTipLater();
+        QToolTip::showText(QCursor::pos(), tr("Search failed! Please check your network."));
     }
-    toolTipWidget->hide();
 }
 
 /**
