@@ -90,6 +90,7 @@ void MainWindow::slotSearchRequested()
 void MainWindow::slotShowToolTip()
 {
     QPoint point = QCursor::pos();
+    static QPixmap pixmap(":/images/tooltip.svg");
 
     if (QApplication::clipboard()->text(QClipboard::Selection).isEmpty()) {
         return;
@@ -98,7 +99,7 @@ void MainWindow::slotShowToolTip()
     point.setX(point.x() - 12);
     point.setY(point.y() - 36);
     toolTipWidget->move(point);
-    toolTipWidget->setPixmap(QPixmap(":/images/ldict.svg"));
+    toolTipWidget->setPixmap(pixmap);
     toolTipWidget->show();
     slotHideToolTipLater();
 }
@@ -108,6 +109,7 @@ void MainWindow::slotStartLoading()
     static QMovie *movie = new QMovie(":/images/loading.gif", "GIF", this);
 
     toolTipWidget->setMovie(movie);
+    movie->stop();
     movie->start();
 
     ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));

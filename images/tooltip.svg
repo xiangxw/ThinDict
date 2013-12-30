@@ -14,9 +14,48 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="ldict.svg">
+   sodipodi:docname="ldict3.svg"
+   inkscape:export-filename="/home/a/文档/ldict-art/ldict1.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90"
+   enable-background="new">
   <defs
-     id="defs4" />
+     id="defs4">
+    <filter
+       inkscape:collect="always"
+       id="filter3919">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.31616222"
+         id="feGaussianBlur3921" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3923">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.15808111"
+         id="feGaussianBlur3925" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3803">
+      <feBlend
+         inkscape:collect="always"
+         mode="multiply"
+         in2="BackgroundImage"
+         id="feBlend3805" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3015">
+      <feBlend
+         inkscape:collect="always"
+         mode="multiply"
+         in2="BackgroundImage"
+         id="feBlend3017" />
+    </filter>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -25,10 +64,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9195959"
-     inkscape:cx="0.62233905"
-     inkscape:cy="28.509335"
+     inkscape:cx="-23.693868"
+     inkscape:cy="18.421215"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer3"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -38,7 +77,10 @@
      inkscape:window-height="851"
      inkscape:window-x="0"
      inkscape:window-y="24"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     inkscape:snap-object-midpoints="false"
+     inkscape:snap-page="true"
+     inkscape:snap-center="true" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -47,24 +89,38 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="Layer 1"
+     inkscape:label="1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-109.17102,-357.24165)">
+     transform="translate(-109.17102,-357.24165)"
+     style="display:inline;">
+    <rect
+       style="fill:#908a88;fill-opacity:1"
+       id="rect3875"
+       width="32"
+       height="32"
+       x="0"
+       y="0"
+       transform="translate(109.17102,357.24165)" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="2">
     <path
        sodipodi:type="star"
-       style="fill:#146e42;fill-opacity:1"
+       style="display:inline;fill:#146e45;fill-opacity:1;fill-rule:nonzero"
        id="path2985"
        sodipodi:sides="5"
        sodipodi:cx="202.85715"
        sodipodi:cy="300.93362"
        sodipodi:r1="93.721252"
-       sodipodi:r2="64.304615"
+       sodipodi:r2="64.304611"
        sodipodi:arg1="0.65569563"
        sodipodi:arg2="0.58554373"
        inkscape:flatsided="false"
@@ -73,6 +129,11 @@
        d="m 277.14286,358.07648 -20.6935,-21.60474 -84.98275,52.76991 14.15269,-26.35692 -76.44829,-64.5166 29.44035,5.31527 37.73511,-92.64336 4.04244,29.64193 99.76987,7.25986 -26.94197,13.00445 z"
        inkscape:transform-center-x="1.5331622"
        inkscape:transform-center-y="-0.14236212"
-       transform="matrix(0.18714789,0,0,0.17957189,88.73989,319.34479)" />
+       transform="matrix(0.18714789,0,0,0.17957189,-20.43113,-37.89686)" />
   </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="3"
+     style="opacity:1;filter:url(#filter3015)" />
 </svg>
