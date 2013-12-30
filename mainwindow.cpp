@@ -6,6 +6,8 @@
 #include <QMenu>
 #include <QTimer>
 #include <QClipboard>
+#include <QMovie>
+#include <QX11Info>
 #include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -26,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
 
     // create tooltip widget
-    toolTipWidget = new ToolTipWidget(QImage(":/images/ldict.svg"));
+    toolTipWidget = new ToolTipWidget(this);
 
     // create Esc shortcut
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
@@ -44,11 +46,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->searchPushButton, SIGNAL(clicked()),
             this, SLOT(slotSearchRequested()));
     connect(toolTipWidget, SIGNAL(enterToolTip()),
-            this, SLOT(slotPopupResult()));
+            this, SLOT(slotStartLoading()));
     connect(toolTipWidget, SIGNAL(enterToolTip()),
             toolTipWidget, SLOT(stopHiding()));
     connect(toolTipWidget, SIGNAL(leaveToolTip()),
             this, SLOT(slotHideToolTipLater()));
+    connect(webview, SIGNAL(loadFinished(bool)),
+            this, SLOT(slotLoadFinished(bool)));
     // select a word
     connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
             this, SLOT(slotShowToolTip()));
@@ -57,7 +61,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete toolTipWidget;
 }
 
 bool MainWindow::event(QEvent *event)
@@ -95,25 +98,39 @@ void MainWindow::slotShowToolTip()
     point.setX(point.x() - 12);
     point.setY(point.y() - 36);
     toolTipWidget->move(point);
+    toolTipWidget->setPixmap(QPixmap(":/images/ldict.svg"));
     toolTipWidget->show();
     slotHideToolTipLater();
 }
 
-void MainWindow::slotPopupResult()
+void MainWindow::slotStartLoading()
 {
+    static QMovie *movie = new QMovie(":/images/loading.gif", "GIF", this);
+
+    toolTipWidget->setMovie(movie);
+    movie->start();
+
     ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));
     slotSearchRequested();
+}
 
-    ensureAllRegionVisiable();
-    if (this->isHidden()) {
-        this->show();
+/**
+ * @brief Load finished slot
+ */
+void MainWindow::slotLoadFinished(bool ok)
+{
+    if (ok) {
+        ensureAllRegionVisiable();
+        if (this->isHidden()) {
+            this->show();
+        }
+        if (!this->isActiveWindow()) {
+            this->activateWindow();
+            this->raise();
+        }
+        m_popup = true;
     }
-    if (!this->isActiveWindow()) {
-        this->activateWindow();
-        this->raise();
-    }
-
-    m_popup = true;
+    toolTipWidget->hide();
 }
 
 /**
@@ -196,11 +213,21 @@ void MainWindow::ensureAllRegionVisiable()
     this->setGeometry(windowRect);
 }
 
-ToolTipWidget::ToolTipWidget(const QImage &image, QWidget *parent)
-    : QWidget(parent, Qt::ToolTip),
-      m_image(image)
+ToolTipWidget::ToolTipWidget(QWidget *parent)
+    : QLabel(parent, Qt::ToolTip)
 {
     m_timer = new QTimer(this);
+
+    this->setScaledContents(true);
+
+    // transparent background
+#if QT_VERSION >= 0x050000 // Qt5
+    // TODO check if transpart is supported
+#else // Qt4
+    if (QX11Info::isCompositingManagerRunning()) {
+        this->setAttribute(Qt::WA_TranslucentBackground);
+    }
+#endif
 }
 
 /**
@@ -221,33 +248,6 @@ void ToolTipWidget::hideLater(int sec)
 void ToolTipWidget::stopHiding()
 {
     disconnect(m_timer, 0, 0, 0);
-}
-
-void ToolTipWidget::paintEvent(QPaintEvent *e)
-{
-    QPainter painter;
-
-    (void)e;
-
-    painter.begin(this);
-    painter.setRenderHint(QPainter::SmoothPixmapTransform);
-    // TODO real transparent
-    // pseudo transparent
-#if QT_VERSION >= 0x050000 // Qt5
-    painter.drawPixmap(this->rect(),
-                       QApplication::primaryScreen()->grabWindow(0,
-                                                                 this->pos().x(),
-                                                                 this->pos().y(),
-                                                                 this->width(),
-                                                                 this->height()));
-#else // Qt4
-    painter.drawPixmap(this->rect(),
-                       QPixmap::grabWindow(QApplication::desktop()->winId(),
-                                           this->pos().x(), this->pos().y(),
-                                           this->width(), this->height()));
-#endif
-    // draw icon
-    painter.drawImage(this->rect(), m_image);
 }
 
 void ToolTipWidget::enterEvent(QEvent *e)

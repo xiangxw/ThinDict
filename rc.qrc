@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>images/ldict.svg</file>
         <file>images/quit.svg</file>
+        <file>images/loading.gif</file>
     </qresource>
 </RCC>
