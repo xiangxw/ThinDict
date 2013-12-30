@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
 
     // create tooltip widget
-    toolTipWidget = new ToolTipWidget(QImage(":/images/ldict.png"));
+    toolTipWidget = new ToolTipWidget(QImage(":/images/ldict.svg"));
 
     // create Esc shortcut
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
@@ -157,7 +157,7 @@ void MainWindow::createSystemTrayIcon()
 {
     QMenu *menu;
 
-    systemTray = new QSystemTrayIcon(QIcon(":/images/ldict.png"), this);
+    systemTray = new QSystemTrayIcon(QIcon(":/images/ldict.svg"), this);
     connect(systemTray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(slotSystemTrayActivated(QSystemTrayIcon::ActivationReason)));
 
@@ -225,6 +225,7 @@ void ToolTipWidget::paintEvent(QPaintEvent *e)
     (void)e;
 
     painter.begin(this);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform);
     // TODO real transparent
     // pseudo transparent
 #if QT_VERSION >= 0x050000 // Qt5

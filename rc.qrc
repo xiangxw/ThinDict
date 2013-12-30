@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/ldict.png</file>
+        <file>images/ldict.svg</file>
     </qresource>
 </RCC>
