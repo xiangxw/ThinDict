@@ -158,11 +158,12 @@ void MainWindow::createSystemTrayIcon()
     QMenu *menu;
 
     systemTray = new QSystemTrayIcon(QIcon(":/images/ldict.svg"), this);
+    systemTray->setToolTip(tr("LDict, a lite dict program"));
     connect(systemTray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(slotSystemTrayActivated(QSystemTrayIcon::ActivationReason)));
 
     menu = new QMenu(this);
-    menu->addAction(tr("&Quit"), qApp, SLOT(quit()));
+    menu->addAction(QIcon(":/images/quit.svg"), tr("&Quit"), qApp, SLOT(quit()));
 
     systemTray->setContextMenu(menu);
     systemTray->show();
