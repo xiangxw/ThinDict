@@ -221,15 +221,6 @@ ToolTipWidget::ToolTipWidget(QWidget *parent)
     m_timer = new QTimer(this);
 
     this->setScaledContents(true);
-
-    // transparent background
-#if QT_VERSION >= 0x050000 // Qt5
-    // TODO check if transpart is supported
-#else // Qt4
-    if (QX11Info::isCompositingManagerRunning()) {
-        this->setAttribute(Qt::WA_TranslucentBackground);
-    }
-#endif
 }
 
 /**
