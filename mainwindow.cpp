@@ -226,6 +226,14 @@ ToolTipWidget::ToolTipWidget(QWidget *parent)
     m_timer = new QTimer(this);
 
     this->setScaledContents(true);
+
+    // rounded rect
+    QPainterPath path;
+    QPolygon polygon;
+    path.addRoundedRect(0.0, 0.0, this->sizeHint().width(), this->sizeHint().height(),
+                        20.0, 20.0, Qt::RelativeSize);
+    polygon = path.toFillPolygon().toPolygon();
+    this->setMask(QRegion(polygon));
 }
 
 /**
