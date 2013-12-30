@@ -7,7 +7,6 @@
 #include <QTimer>
 #include <QClipboard>
 #include <QMovie>
-#include <QX11Info>
 #include <QToolTip>
 #include <QDebug>
 #include "mainwindow.h"
