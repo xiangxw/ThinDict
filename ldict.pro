@@ -20,3 +20,9 @@ FORMS    += mainwindow.ui
 
 RESOURCES += \
     rc.qrc
+
+isEmpty(PREFIX) {
+    PREFIX = /opt/$$TARGET
+}
+target.path = $$PREFIX/bin
+INSTALLS += target

@@ -1,0 +1,13 @@
+Source: ldict
+Section: education
+Priority: extra
+Maintainer: xiangxw <xiangxw5689@126.com>
+Build-Depends: debhelper (>= 8.0.0), libqt4-dev, libqtwebkit-dev
+Standards-Version: 3.9.4
+Homepage: https://github.com/xiangxw/ldict
+
+Package: ldict
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A lite dict program
+ LDict is a lite dict pragram write with Qt.
