@@ -122,11 +122,11 @@ void MainWindow::slotStartLoading()
 void MainWindow::slotLoadFinished(bool ok)
 {
     if (ok) {
-        ensureAllRegionVisiable();
-        if (this->isHidden()) {
-            this->show();
-        }
-        if (!this->isActiveWindow()) {
+        if (!this->isActiveWindow()) { // search word not in ldict window
+            ensureAllRegionVisiable();
+            if (this->isHidden()) {
+                this->show();
+            }
             this->activateWindow();
             this->raise();
         }
