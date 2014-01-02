@@ -37,6 +37,7 @@ private slots:
 private:
     void createSystemTrayIcon();
     void ensureAllRegionVisiable();
+    void moveToScreenCenter();
 
     Ui::MainWindow *ui;
     QWebView *webview;

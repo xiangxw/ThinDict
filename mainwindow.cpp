@@ -157,15 +157,18 @@ void MainWindow::slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reaso
 {
     // show or hide the window when it's not a popup window.
     if (reason == QSystemTrayIcon::Trigger && !m_popup) {
-        if (this->isHidden() || !this->isActiveWindow()) {
+        if (this->isActiveWindow()) { // active
+            this->hide();
+        } else { // not active
+            if (!this->isHidden()) { // not hidden
+                this->hide(); // for multiple virtual desktop
+            }
+            moveToScreenCenter();
             this->show();
             this->activateWindow();
             this->raise();
-            m_popup = false;
-        } else {
-            this->hide();
-            m_popup = false;
         }
+        m_popup = false;
     }
 }
 
@@ -217,6 +220,23 @@ void MainWindow::ensureAllRegionVisiable()
         windowRect.moveBottom(availableRect.bottom());
     }
     this->setGeometry(windowRect);
+}
+
+/**
+ * @brief Move this window to center of the available screen space.
+ */
+void MainWindow::moveToScreenCenter()
+{
+    QPoint pos;
+    QPoint center;
+    QSize size = this->sizeHint();
+    QRect availableRect = qApp->desktop()->availableGeometry();
+
+    center.setX(availableRect.x() + availableRect.width() / 2);
+    center.setY(availableRect.y() + availableRect.height() / 2);
+    pos.setX(center.x() - size.width() / 2);
+    pos.setY(center.y() - size.height() / 2);
+    this->move(pos);
 }
 
 ToolTipWidget::ToolTipWidget(QWidget *parent)
