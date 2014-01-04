@@ -25,4 +25,6 @@ isEmpty(PREFIX) {
     PREFIX = /opt/$$TARGET
 }
 target.path = $$PREFIX/bin
-INSTALLS += target
+desktopfile.files = debian/ldict.desktop
+desktopfile.path = /usr/share/application
+INSTALLS += target desktopfile
