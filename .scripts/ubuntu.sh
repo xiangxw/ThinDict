@@ -16,7 +16,7 @@ function createOriginSource()
 	DEBFULLNAME=${NAME} dh_make -c lgpl3 --email ${EMAIL} --createorig -p ldict_${LDICT_VERSION} --single --yes
 }
 
-function debuildAndUpload()
+function debuild()
 {
 	echo 'ldict ('${LDICT_PACKAGE_VERSION}'ubuntu1ppa1~'$1'1) '$1'; urgency=low' > tmp
 	echo '' >> tmp
@@ -36,5 +36,7 @@ rm ../ldict*
 createOriginSource
 # build deb source packages for all supported ubuntu series
 for (( i = 0; i < ${#UBUNTU_SERIES[@]}; i++ )); do
-	debuildAndUpload ${UBUNTU_SERIES[$i]}
+	debuild ${UBUNTU_SERIES[$i]}
 done
+# upload
+dput ppa:xiangxw5689/ldict ../ldict_*_source.changes
