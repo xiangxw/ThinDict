@@ -26,5 +26,7 @@ isEmpty(PREFIX) {
 }
 target.path = $$PREFIX/bin
 desktopfile.files = debian/ldict.desktop
-desktopfile.path = /usr/share/application
-INSTALLS += target desktopfile
+desktopfile.path = /usr/share/applications
+logofile.files = images/ldict.svg
+logofile.path = /usr/share/pixmaps
+INSTALLS += target desktopfile logofile
