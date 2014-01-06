@@ -24,9 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     webview = new QWebView(this);
     ui->resultScrollArea->setWidget(webview);
 
-    // enable flash for speech
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
-
     // create tooltip widget
     toolTipWidget = new ToolTipWidget(this);
 
@@ -84,7 +81,7 @@ void MainWindow::slotSearchRequested()
         return;
     }
 
-    webview->load(QUrl("http://dict.cn/mini.php?q=" + word));
+    webview->load(QUrl("http://3g.dict.cn/s.php?q=" + word));
 }
 
 void MainWindow::slotShowToolTip()
@@ -132,6 +129,7 @@ void MainWindow::slotLoadFinished(bool ok)
         }
         m_popup = true;
         toolTipWidget->hide();
+        webview->page()->mainFrame()->evaluateJavaScript("scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
     } else {
         m_popup = false;
         slotHideToolTipLater();
