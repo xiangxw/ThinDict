@@ -71,15 +71,44 @@ bool MainWindow::event(QEvent *event)
     return QMainWindow::event(event);
 }
 
+/**
+ * @brief ch is a special char
+ */
+static bool isSpecial(const QChar &ch)
+{
+    static const char *chars = "~`!@#$%^&*()-_=+[{]};:'\"\\|,<.>/?* \t\n\r";
+    static const int len = strlen(chars);
+
+    for (int i = 0; i < len; ++i) {
+        if (ch == chars[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * @brief Refine search word
+ */
+static void refineWord(QString &word)
+{
+    word = word.trimmed();
+    // remove special chars at the beginning of the word
+    while (!word.isEmpty() && isSpecial(*(word.begin()))) {
+        word.remove(0, 1);
+    }
+    // remove special chars at the end of the word
+    while (!word.isEmpty() && isSpecial(*(word.end() - 1))) {
+        word.remove(word.length() - 1, 1);
+    }
+}
+
 void MainWindow::slotSearchRequested()
 {
     QString word;
 
     word = ui->wordLineEdit->text();
-    word = word.trimmed();
-    if (word.isEmpty()) {
-        return;
-    }
+    refineWord(word);
 
     webview->load(QUrl("http://3g.dict.cn/s.php?q=" + word));
 }
