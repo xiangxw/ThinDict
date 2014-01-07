@@ -80,7 +80,7 @@ static bool isSpecial(const QChar &ch)
     static const int len = strlen(chars);
 
     for (int i = 0; i < len; ++i) {
-        if (ch == chars[i]) {
+        if (ch == chars[i] || ch.isNumber()) {
             return true;
         }
     }
