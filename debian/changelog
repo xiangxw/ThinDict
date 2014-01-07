@@ -1,3 +1,10 @@
+ldict (0.1.6-1) stable; urgency=low
+
+  * Select search word when Esc is pressed.
+  * Refine search word.
+
+ -- xiangxw <xiangxw5689@126.com>  Tue, 07 Jan 2014 14:53:40 +0800
+
 ldict (0.1.5-1) stable; urgency=low
 
   * Use 3g version of dict.cn
