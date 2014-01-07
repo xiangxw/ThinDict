@@ -142,8 +142,8 @@ void MainWindow::slotLoadFinished(bool ok)
  */
 void MainWindow::slotEsc()
 {
-    this->hide();
-    m_popup = false;
+    ui->wordLineEdit->selectAll();
+    ui->wordLineEdit->setFocus();
 }
 
 
