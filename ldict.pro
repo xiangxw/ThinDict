@@ -21,6 +21,8 @@ FORMS    += mainwindow.ui
 RESOURCES += \
     rc.qrc
 
+TRANSLATIONS += translations/zh_CN.ts
+
 isEmpty(PREFIX) {
     PREFIX = /opt/$$TARGET
 }

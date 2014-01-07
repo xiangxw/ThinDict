@@ -1,12 +1,23 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QTranslator>
+#include <QLocale>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    QString locale = QLocale::system().name();
+    QTranslator translator;
 
+    // install translator
+    translator.load(QString(":/translations/%1").arg(locale));
+    a.installTranslator(&translator);
+
+    // set window icon
     a.setWindowIcon(QIcon(":/images/ldict.svg"));
+
+    // create window
+    MainWindow w;
 
     return a.exec();
 }

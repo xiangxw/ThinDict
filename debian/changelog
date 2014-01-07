@@ -1,3 +1,9 @@
+ldict (0.1.7-1) stable; urgency=low
+
+  * Add translation file for zh_CN
+
+ -- xiangxw <xiangxw5689@126.com>  Tue, 07 Jan 2014 22:04:59 +0800
+
 ldict (0.1.6-1) stable; urgency=low
 
   * Select search word when Esc is pressed.

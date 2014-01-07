@@ -9,5 +9,5 @@ Homepage: https://github.com/xiangxw/ldict
 Package: ldict
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: A lite dict program
- LDict is a lite dict pragram write with Qt.
+Description: LDict，Linux下简易的英汉词典
+ LDict是Linux下简易的英汉词典，使用Qt编写。
