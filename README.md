@@ -1,14 +1,14 @@
 ## 截图
-![LDict](http://ubuntuone.com/7jRKC15enMSYJf6tqvv8T2)
+![ThinDict](http://ubuntuone.com/7jRKC15enMSYJf6tqvv8T2)
 
 ## 安装方法
 #### ubuntu下（支持的版本为12.04-14.04）：
 
-    sudo apt-add-repository ppa:xiangxw5689/ldict
+    sudo apt-add-repository ppa:xiangxw5689/thindict
     sudo apt-get update
-    sudo apt-get install ldict
+    sudo apt-get install thindict
 
-卸载：`sudo apt-get purge ldict`
+卸载：`sudo apt-get purge thindict`
 
 #### 其他Linux发行版可以编译安装：
 

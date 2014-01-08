@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
 
-    a.setWindowIcon(QIcon(":/images/ldict.svg"));
+    a.setWindowIcon(QIcon(":/images/thindict.svg"));
 
     return a.exec();
 }
