@@ -183,7 +183,7 @@ void MainWindow::slotEsc()
 void MainWindow::slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
     // show or hide the window when it's not a popup window.
-    if (reason == QSystemTrayIcon::Trigger && !m_popup) {
+    if (reason == QSystemTrayIcon::Trigger) {
         if (this->isActiveWindow()) { // active
             this->hide();
         } else { // not active
