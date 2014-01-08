@@ -16,8 +16,15 @@ function createOriginSource()
 	DEBFULLNAME=${NAME} dh_make -c lgpl3 --email ${EMAIL} --createorig -p thindict_${THINDICT_VERSION} --single --yes
 }
 
+function debuildBinary()
+{
+	# build binary package
+	debuild
+}
+
 function debuildSource()
 {
+	# build source package
 	echo 'thindict ('${THINDICT_PACKAGE_VERSION}'ubuntu1ppa1~'$1'1) '$1'; urgency=low' > tmp
 	echo '' >> tmp
 	echo '  * For ubuntu '$1' ppa' >> tmp
@@ -30,13 +37,22 @@ function debuildSource()
 	git checkout -- debian/changelog
 }
 
+function debuildAllSourceAndUpload()
+{
+	# build source packages for all ubuntu series and upload them
+	for (( i = 0; i < ${#UBUNTU_SERIES[@]}; i++ )); do
+		debuildSource ${UBUNTU_SERIES[$i]}
+	done
+	dput ppa:xiangxw5689/thindict ../thindict_*_source.changes
+}
+
 # remove old packages
 rm ../thindict*
 # create origin source package
 createOriginSource
-# build deb source packages for all supported ubuntu series
-for (( i = 0; i < ${#UBUNTU_SERIES[@]}; i++ )); do
-	debuildSource ${UBUNTU_SERIES[$i]}
-done
-# upload
-dput ppa:xiangxw5689/thindict ../thindict_*_source.changes
+# build
+if [[ $# -eq 0 ]]; then
+	debuildAllSourceAndUpload
+elif [[ "$1" == "binary" ]]; then
+	debuildBinary
+fi
