@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/ldict.svg</file>
+        <file>images/thindict.svg</file>
         <file>images/quit.svg</file>
         <file>images/loading.gif</file>
         <file>images/tooltip.svg</file>

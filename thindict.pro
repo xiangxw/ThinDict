@@ -7,7 +7,7 @@
 QT += core gui webkit
 greaterThan(QT_MAJOR_VERSION, 4): QT += webkitwidgets
 
-TARGET = ldict
+TARGET = thindict
 TEMPLATE = app
 
 
@@ -27,8 +27,8 @@ isEmpty(PREFIX) {
     PREFIX = /opt/$$TARGET
 }
 target.path = $$PREFIX/bin
-desktopfile.files = debian/ldict.desktop
+desktopfile.files = debian/thindict.desktop
 desktopfile.path = /usr/share/applications
-logofile.files = images/ldict.svg
+logofile.files = images/thindict.svg
 logofile.path = /usr/share/pixmaps
 INSTALLS += target desktopfile logofile

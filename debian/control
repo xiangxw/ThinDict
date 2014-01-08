@@ -1,13 +1,13 @@
-Source: ldict
+Source: thindict
 Section: education
 Priority: extra
 Maintainer: xiangxw <xiangxw5689@126.com>
 Build-Depends: debhelper (>= 8.0.0), libqt4-dev, libqtwebkit-dev
 Standards-Version: 3.9.4
-Homepage: https://github.com/xiangxw/ldict
+Homepage: https://github.com/xiangxw/ThinDict
 
-Package: ldict
+Package: thindict
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: LDict，Linux下简易的英汉词典
- LDict是Linux下简易的英汉词典，使用Qt编写。
+Description: A thin dict program
+ ThinDict is a thin dict pragram write with Qt.

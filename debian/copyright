@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: ldict
-Source: https://github.com/xiangxw/ldict
+Upstream-Name: ThinDict
+Source: https://github.com/xiangxw/ThinDict
 
 Files: *
 Copyright: 2014 xiangxw <xiangxw5689@126.com>

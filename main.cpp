@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     a.installTranslator(&translator);
 
     // set window icon
-    a.setWindowIcon(QIcon(":/images/ldict.svg"));
+    a.setWindowIcon(QIcon(":/images/thindict.svg"));
 
     // create window
     MainWindow w;

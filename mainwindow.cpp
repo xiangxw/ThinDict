@@ -148,7 +148,7 @@ void MainWindow::slotStartLoading()
 void MainWindow::slotLoadFinished(bool ok)
 {
     if (ok) {
-        if (!this->isActiveWindow()) { // search word not in ldict window
+        if (!this->isActiveWindow()) { // search word not in thindict window
             ensureAllRegionVisiable();
             if (this->isHidden()) {
                 this->show();
@@ -183,7 +183,7 @@ void MainWindow::slotEsc()
 void MainWindow::slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
     // show or hide the window when it's not a popup window.
-    if (reason == QSystemTrayIcon::Trigger && !m_popup) {
+    if (reason == QSystemTrayIcon::Trigger) {
         if (this->isActiveWindow()) { // active
             this->hide();
         } else { // not active
@@ -214,8 +214,8 @@ void MainWindow::createSystemTrayIcon()
 {
     QMenu *menu;
 
-    systemTray = new QSystemTrayIcon(QIcon(":/images/ldict.svg"), this);
-    systemTray->setToolTip(tr("LDict, a lite dict program"));
+    systemTray = new QSystemTrayIcon(QIcon(":/images/thindict.svg"), this);
+    systemTray->setToolTip(tr("ThinDict, a lite dict program"));
     connect(systemTray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(slotSystemTrayActivated(QSystemTrayIcon::ActivationReason)));
 
