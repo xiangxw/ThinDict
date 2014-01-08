@@ -14,6 +14,7 @@
 
     sudo apt-get install libqt4-dev libqtwebkit-dev
     qmake PREFIX=/usr
+	lrelease thindict.pro
     make
     sudo make install
 

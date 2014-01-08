@@ -5,8 +5,8 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
-        <source>LDict</source>
-        <translation>LDict</translation>
+        <source>ThinDict</source>
+        <translation>ThinDict</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="26"/>
@@ -20,8 +20,8 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="218"/>
-        <source>LDict, a lite dict program</source>
-        <translation>LDict，Linux下简易的英汉词典</translation>
+        <source>ThinDict, a lite dict program</source>
+        <translation>ThinDict，Linux下简易的英汉词典</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="223"/>
