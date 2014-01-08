@@ -1,3 +1,9 @@
+thindict (0.1.8-1) stable; urgency=low
+
+  * Change project name to ThinDict
+
+ -- xiangxw <xiangxw5689@126.com>  Wed, 08 Jan 2014 23:38:34 +0800
+
 thindict (0.1.7-1) stable; urgency=low
 
   * Add translation file for zh_CN
