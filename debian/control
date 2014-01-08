@@ -9,5 +9,5 @@ Homepage: https://github.com/xiangxw/ThinDict
 Package: thindict
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: A thin dict program
- ThinDict is a thin dict pragram write with Qt.
+Description: A lite dict program
+ ThinDict is a lite dict pragram write with Qt.
