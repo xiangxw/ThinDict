@@ -26,7 +26,7 @@ function debuildSource()
 	echo '' >> tmp
 	cat debian/changelog >> tmp
 	mv tmp debian/changelog
-	debuild -S -sa
+	debuild -S -sa -kxiangxw5689@126.com
 	git checkout -- debian/changelog
 }
 
