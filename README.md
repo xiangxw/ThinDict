@@ -1,5 +1,5 @@
 ## 截图
-![LDict_016](http://git.oschina.net/uploads/images/2014/0108/155408_7fa1df26_11073.png)
+![LDict](http://ubuntuone.com/7jRKC15enMSYJf6tqvv8T2)
 
 ## 安装方法
 #### ubuntu下（支持的版本为12.04-14.04）：
@@ -20,9 +20,3 @@
 卸载：进入源代码目录执行：`qmake PREFIX=/usr; sudo make uninstall`
 
 _**欢迎其他Linux发行版用户提供打包，并添加到该安装说明中～**_
-
-## 提交错误或建议
-http://git.oschina.net/xiangxw/LDict/issues
-
-## 文档
-http://git.oschina.net/xiangxw/LDict/wikis/home
