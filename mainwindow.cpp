@@ -11,6 +11,7 @@
 #include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "settingdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -208,6 +209,19 @@ void MainWindow::slotHideToolTipLater()
 }
 
 /**
+ * @brief Show setting dialog
+ */
+void MainWindow::slotShowSettingDialog()
+{
+    SettingDialog *dialog;
+
+    dialog = new SettingDialog;
+    dialog->setAttribute(Qt::WA_DeleteOnClose, true);
+    dialog->setAttribute(Qt::WA_QuitOnClose, false);
+    dialog->show();
+}
+
+/**
  * @brief Create system tray icon.
  */
 void MainWindow::createSystemTrayIcon()
@@ -220,6 +234,8 @@ void MainWindow::createSystemTrayIcon()
             this, SLOT(slotSystemTrayActivated(QSystemTrayIcon::ActivationReason)));
 
     menu = new QMenu(this);
+    menu->addAction(QIcon(":/images/settings.svg"), tr("&Settings"),
+                    this, SLOT(slotShowSettingDialog()));
     menu->addAction(QIcon(":/images/quit.svg"), tr("&Quit"), qApp, SLOT(quit()));
 
     systemTray->setContextMenu(menu);

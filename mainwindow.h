@@ -33,6 +33,7 @@ private slots:
     void slotEsc();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void slotHideToolTipLater();
+    void slotShowSettingDialog();
 
 private:
     void createSystemTrayIcon();

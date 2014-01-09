@@ -6,5 +6,6 @@
         <file>images/tooltip.svg</file>
         <file>translations/zh_CN.qm</file>
         <file>thindict.desktop</file>
+        <file>images/settings.svg</file>
     </qresource>
 </RCC>

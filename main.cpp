@@ -1,7 +1,7 @@
-#include "mainwindow.h"
 #include <QApplication>
 #include <QTranslator>
 #include <QLocale>
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +15,10 @@ int main(int argc, char *argv[])
 
     // set window icon
     a.setWindowIcon(QIcon(":/images/thindict.svg"));
+
+    // set application info for QSettings
+    a.setOrganizationName("ThinDict");
+    a.setApplicationName("thindict");
 
     // create window
     MainWindow w;
