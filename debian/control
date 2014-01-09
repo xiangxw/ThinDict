@@ -10,4 +10,4 @@ Package: thindict
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: A lite dict program
- ThinDict is a lite dict pragram write with Qt.
+ ThinDict is a lite dict program write with Qt.
