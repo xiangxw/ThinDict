@@ -12,7 +12,7 @@
 
 #### 其他Linux发行版可以编译安装：
 
-    sudo apt-get install libqt4-dev libqtwebkit-dev
+    sudo apt-get install libqt4-dev libqtwebkit-dev libqxt-dev
     qmake PREFIX=/usr
 	lrelease thindict.pro
     make
