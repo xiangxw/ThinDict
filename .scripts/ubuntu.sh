@@ -20,6 +20,7 @@ function debuildBinary()
 {
 	# build binary package
 	debuild
+	debuild clean
 }
 
 function debuildSource()
@@ -47,7 +48,7 @@ function debuildAllSourceAndUpload()
 }
 
 # remove old packages
-rm ../thindict*
+rm -f ../thindict*
 # create origin source package
 createOriginSource
 # build
