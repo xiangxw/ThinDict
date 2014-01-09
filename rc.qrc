@@ -5,5 +5,6 @@
         <file>images/loading.gif</file>
         <file>images/tooltip.svg</file>
         <file>translations/zh_CN.qm</file>
+        <file>thindict.desktop</file>
     </qresource>
 </RCC>

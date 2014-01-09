@@ -27,7 +27,7 @@ isEmpty(PREFIX) {
     PREFIX = /opt/$$TARGET
 }
 target.path = $$PREFIX/bin
-desktopfile.files = debian/thindict.desktop
+desktopfile.files = thindict.desktop
 desktopfile.path = /usr/share/applications
 logofile.files = images/thindict.svg
 logofile.path = /usr/share/pixmaps
