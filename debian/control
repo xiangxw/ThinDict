@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: xiangxw <xiangxw5689@126.com>
 Build-Depends: debhelper (>= 8.0.0), libqt4-dev, libqtwebkit-dev
 Standards-Version: 3.9.4
-Homepage: https://github.com/xiangxw/ThinDict
+Homepage: http://xiangxw.github.io/ThinDict/
 
 Package: thindict
 Architecture: any
