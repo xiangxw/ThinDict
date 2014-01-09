@@ -8,6 +8,7 @@
 #include <QClipboard>
 #include <QMovie>
 #include <QToolTip>
+#include <QxtGlobalShortcut>
 #include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -32,6 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
     connect(shortcut, SIGNAL(activated()),
             this, SLOT(slotEsc()));
+
+    // create toggle visible global shortcut
+    QxtGlobalShortcut *toggleVisibleShortcut = new QxtGlobalShortcut(QKeySequence("Ctrl+Alt+A"), this);
+    connect(toggleVisibleShortcut, SIGNAL(activated()),
+            this, SLOT(slotToggleVisible()));
 
     // create system tray icon
     createSystemTrayIcon();
@@ -176,28 +182,34 @@ void MainWindow::slotEsc()
     ui->wordLineEdit->setFocus();
 }
 
-
 /**
  * @brief System tray is activated.
  * @param reason Activate reason.
  */
 void MainWindow::slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-    // show or hide the window when it's not a popup window.
     if (reason == QSystemTrayIcon::Trigger) {
-        if (this->isActiveWindow()) { // active
-            this->hide();
-        } else { // not active
-            if (!this->isHidden()) { // not hidden
-                this->hide(); // for multiple virtual desktop
-            }
-            moveToScreenCenter();
-            this->show();
-            this->activateWindow();
-            this->raise();
-        }
-        m_popup = false;
+        slotToggleVisible();
     }
+}
+
+/**
+ * @brief Toggle visible
+ */
+void MainWindow::slotToggleVisible()
+{
+    if (this->isActiveWindow()) { // active
+        this->hide();
+    } else { // not active
+        if (!this->isHidden()) { // not hidden
+            this->hide(); // for multiple virtual desktop
+        }
+        moveToScreenCenter();
+        this->show();
+        this->activateWindow();
+        this->raise();
+    }
+    m_popup = false;
 }
 
 /**

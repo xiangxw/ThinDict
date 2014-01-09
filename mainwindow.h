@@ -32,6 +32,7 @@ private slots:
     void slotLoadFinished(bool ok);
     void slotEsc();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
+    void slotToggleVisible();
     void slotHideToolTipLater();
     void slotShowSettingDialog();
 

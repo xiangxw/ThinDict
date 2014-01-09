@@ -7,6 +7,10 @@
 QT += core gui webkit
 greaterThan(QT_MAJOR_VERSION, 4): QT += webkitwidgets
 
+# libqxt
+CONFIG += qxt
+QXT += core gui
+
 TARGET = thindict
 TEMPLATE = app
 
