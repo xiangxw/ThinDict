@@ -1,3 +1,9 @@
+thindict (0.1.10-1) stable; urgency=low
+
+  * Add global shortcut to toggle visible
+
+ -- xiangxw <xiangxw5689@126.com>  Thu, 09 Jan 2014 21:47:48 +0800
+
 thindict (0.1.9-1) stable; urgency=low
 
   * Support auto start
