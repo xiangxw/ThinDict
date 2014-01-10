@@ -155,7 +155,7 @@ void MainWindow::slotStartLoading()
 void MainWindow::slotLoadFinished(bool ok)
 {
     if (ok) {
-        if (!this->isActiveWindow()) { // search word not in thindict window
+        if (!this->isActiveWindow() && resultStillUseful()) { // search word not in thindict window
             ensureAllRegionVisiable();
             if (this->isHidden()) {
                 this->show();
@@ -168,8 +168,10 @@ void MainWindow::slotLoadFinished(bool ok)
         webview->page()->mainFrame()->evaluateJavaScript("scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
     } else {
         m_popup = false;
+        if (resultStillUseful()) {
+            QToolTip::showText(QCursor::pos(), tr("Search failed! Please check your network."));
+        }
         slotHideToolTipLater();
-        QToolTip::showText(QCursor::pos(), tr("Search failed! Please check your network."));
     }
 }
 
@@ -317,6 +319,17 @@ void MainWindow::moveToScreenCenter()
     pos.setX(center.x() - size.width() / 2);
     pos.setY(center.y() - size.height() / 2);
     this->move(pos);
+}
+
+/**
+ * @brief Check whether the search result is still useful.
+ */
+bool MainWindow::resultStillUseful() const
+{
+    if (toolTipWidget->isHidden() || !toolTipWidget->underMouse()) {
+        return false;
+    }
+    return true;
 }
 
 ToolTipWidget::ToolTipWidget(QWidget *parent)

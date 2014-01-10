@@ -43,6 +43,7 @@ private:
     void createShortcuts();
     void ensureAllRegionVisiable();
     void moveToScreenCenter();
+    bool resultStillUseful() const;
 
     Ui::MainWindow *ui;
     QWebView *webview;
