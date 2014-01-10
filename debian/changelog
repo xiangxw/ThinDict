@@ -1,3 +1,9 @@
+thindict (0.1.12-1) stable; urgency=low
+
+  * Test ubuntu.sh
+
+ -- xiangxw <xiangxw5689@126.com>  Fri, 10 Jan 2014 17:12:29 +0800
+
 thindict (0.1.11-1) stable; urgency=low
 
   * Support shortcut configuration
