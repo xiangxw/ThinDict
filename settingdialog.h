@@ -15,6 +15,9 @@ public:
     explicit SettingDialog(QWidget *parent = 0);
     ~SettingDialog();
 
+signals:
+    void shortcutChanged(const QKeySequence &key);
+
 private slots:
     void slotToggleAutostart(bool checked);
 

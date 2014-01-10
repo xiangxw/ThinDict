@@ -17,6 +17,8 @@ SettingDialog::SettingDialog(QWidget *parent)
             this, SLOT(close()));
     connect(ui->autostartCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(slotToggleAutostart(bool)));
+    connect(ui->toggleVisibleShortcutEdit, SIGNAL(shortcutChanged(QKeySequence)),
+            this, SIGNAL(shortcutChanged(QKeySequence)));
 }
 
 SettingDialog::~SettingDialog()
@@ -47,5 +49,8 @@ void SettingDialog::loadSettings()
 {
     QSettings settings;
 
-    ui->autostartCheckBox->setChecked(settings.value("autostart", false).toBool());
+    ui->autostartCheckBox->setChecked(
+                settings.value("Autostart", false).toBool());
+    ui->toggleVisibleShortcutEdit->setKey(
+                QKeySequence(settings.value("ToggleVisibleShortcut").toString()));
 }

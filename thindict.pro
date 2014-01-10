@@ -17,10 +17,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    settingdialog.cpp
+    settingdialog.cpp \
+    shortcutedit.cpp
 
 HEADERS  += mainwindow.h \
-    settingdialog.h
+    settingdialog.h \
+    shortcutedit.h
 
 FORMS    += \
     ui/mainwindow.ui \

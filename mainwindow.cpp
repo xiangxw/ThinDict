@@ -9,6 +9,7 @@
 #include <QMovie>
 #include <QToolTip>
 #include <QxtGlobalShortcut>
+#include <QSettings>
 #include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -29,18 +30,15 @@ MainWindow::MainWindow(QWidget *parent) :
     // create tooltip widget
     toolTipWidget = new ToolTipWidget(this);
 
-    // create Esc shortcut
-    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-    connect(shortcut, SIGNAL(activated()),
-            this, SLOT(slotEsc()));
-
-    // create toggle visible global shortcut
-    QxtGlobalShortcut *toggleVisibleShortcut = new QxtGlobalShortcut(QKeySequence("Ctrl+Alt+A"), this);
-    connect(toggleVisibleShortcut, SIGNAL(activated()),
-            this, SLOT(slotToggleVisible()));
+    // create setting dialog
+    settingDialog = new SettingDialog(this);
+    settingDialog->setAttribute(Qt::WA_QuitOnClose, false);
 
     // create system tray icon
     createSystemTrayIcon();
+
+    // create shortcuts
+    createShortcuts();
 
     // do not quit on close
     this->setAttribute(Qt::WA_QuitOnClose, false);
@@ -57,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(slotHideToolTipLater()));
     connect(webview, SIGNAL(loadFinished(bool)),
             this, SLOT(slotLoadFinished(bool)));
+    connect(settingDialog, SIGNAL(shortcutChanged(QKeySequence)),
+            this, SLOT(slotChangeShortcut(QKeySequence)));
     // select a word
     connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
             this, SLOT(slotShowToolTip()));
@@ -174,9 +174,9 @@ void MainWindow::slotLoadFinished(bool ok)
 }
 
 /**
- * @brief Call this when Esc is pressed.
+ * @brief Select all.
  */
-void MainWindow::slotEsc()
+void MainWindow::slotSelectWord()
 {
     ui->wordLineEdit->selectAll();
     ui->wordLineEdit->setFocus();
@@ -221,16 +221,15 @@ void MainWindow::slotHideToolTipLater()
 }
 
 /**
- * @brief Show setting dialog
+ * @brief Change shortcut
  */
-void MainWindow::slotShowSettingDialog()
+void MainWindow::slotChangeShortcut(const QKeySequence &key)
 {
-    SettingDialog *dialog;
+    toggleVisibleShortcut->disconnect();
 
-    dialog = new SettingDialog;
-    dialog->setAttribute(Qt::WA_DeleteOnClose, true);
-    dialog->setAttribute(Qt::WA_QuitOnClose, false);
-    dialog->show();
+    toggleVisibleShortcut->setShortcut(key);
+    connect(toggleVisibleShortcut, SIGNAL(activated()),
+            this, SLOT(slotToggleVisible()));
 }
 
 /**
@@ -247,11 +246,37 @@ void MainWindow::createSystemTrayIcon()
 
     menu = new QMenu(this);
     menu->addAction(QIcon(":/images/settings.svg"), tr("&Settings"),
-                    this, SLOT(slotShowSettingDialog()));
+                    settingDialog, SLOT(show()));
     menu->addAction(QIcon(":/images/quit.svg"), tr("&Quit"), qApp, SLOT(quit()));
 
     systemTray->setContextMenu(menu);
     systemTray->show();
+}
+
+/**
+ * @brief Create shortcuts.
+ */
+void MainWindow::createShortcuts()
+{
+    QSettings settings;
+
+    // create Esc shortcut
+    QShortcut *escShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+    connect(escShortcut, SIGNAL(activated()),
+            this, SLOT(slotSelectWord()));
+
+    // create select word shortcut
+    QShortcut *selectWordShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), this);
+    connect(selectWordShortcut, SIGNAL(activated()),
+            this, SLOT(slotSelectWord()));
+
+    // create toggle visible global shortcut
+    QKeySequence key(settings.value("ToggleVisibleShortcut").toString());
+    if (!key.isEmpty()) {
+        toggleVisibleShortcut = new QxtGlobalShortcut(key, this);
+        connect(toggleVisibleShortcut, SIGNAL(activated()),
+                this, SLOT(slotToggleVisible()));
+    }
 }
 
 /**

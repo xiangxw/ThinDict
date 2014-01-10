@@ -10,6 +10,8 @@ class MainWindow;
 }
 
 class ToolTipWidget;
+class SettingDialog;
+class QxtGlobalShortcut;
 class QWebView;
 class QTimer;
 
@@ -30,14 +32,15 @@ private slots:
     void slotShowToolTip();
     void slotStartLoading();
     void slotLoadFinished(bool ok);
-    void slotEsc();
+    void slotSelectWord();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void slotToggleVisible();
     void slotHideToolTipLater();
-    void slotShowSettingDialog();
+    void slotChangeShortcut(const QKeySequence &key);
 
 private:
     void createSystemTrayIcon();
+    void createShortcuts();
     void ensureAllRegionVisiable();
     void moveToScreenCenter();
 
@@ -45,6 +48,8 @@ private:
     QWebView *webview;
     ToolTipWidget *toolTipWidget;
     QSystemTrayIcon *systemTray;
+    SettingDialog *settingDialog;
+    QxtGlobalShortcut *toggleVisibleShortcut;
     bool m_popup; // whether this window is a popup or not
 };
 
