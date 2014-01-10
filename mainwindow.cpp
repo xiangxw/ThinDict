@@ -272,8 +272,8 @@ void MainWindow::createShortcuts()
 
     // create toggle visible global shortcut
     QKeySequence key(settings.value("ToggleVisibleShortcut").toString());
+    toggleVisibleShortcut = new QxtGlobalShortcut(key, this);
     if (!key.isEmpty()) {
-        toggleVisibleShortcut = new QxtGlobalShortcut(key, this);
         connect(toggleVisibleShortcut, SIGNAL(activated()),
                 this, SLOT(slotToggleVisible()));
     }

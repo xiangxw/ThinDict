@@ -33,7 +33,7 @@ void SettingDialog::slotToggleAutostart(bool checked)
 {
     QSettings settings;
 
-    settings.setValue("autostart", checked);
+    settings.setValue("Autostart", checked);
     if (checked) {
         QFile::copy(":/thindict.desktop", QDir::homePath() + "/.config/autostart/thindict.desktop");
     } else {
