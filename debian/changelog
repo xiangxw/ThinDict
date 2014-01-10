@@ -1,3 +1,9 @@
+thindict (0.1.11-1) stable; urgency=low
+
+  * Support shortcut configuration
+
+ -- xiangxw <xiangxw5689@126.com>  Fri, 10 Jan 2014 16:35:47 +0800
+
 thindict (0.1.10-1) stable; urgency=low
 
   * Add global shortcut to toggle visible

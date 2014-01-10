@@ -13,7 +13,13 @@ EMAIL='xiangxw5689@126.com'
 
 function createOriginSource()
 {
-	DEBFULLNAME=${NAME} dh_make -c lgpl3 --email ${EMAIL} --createorig -p thindict_${THINDICT_VERSION} --single --yes
+	FILENAME=thindict_${THINDICT_VERSION}
+	git archive master --format=tar -o ../${FILENAME}.orig.tar
+	cd ..
+	xz ${FILENAME}.orig.tar
+	mkdir ${FILENAME}
+	cd ${FILENAME}
+	tar -Jxf ../${FILENAME}.orig.tar.xz
 }
 
 function debuildBinary()
@@ -25,6 +31,8 @@ function debuildBinary()
 
 function debuildSource()
 {
+	# backup
+	cp debian/changelog /tmp/thindict-changelog
 	# build source package
 	echo 'thindict ('${THINDICT_PACKAGE_VERSION}'ubuntu1ppa1~'$1'1) '$1'; urgency=low' > tmp
 	echo '' >> tmp
@@ -35,7 +43,8 @@ function debuildSource()
 	cat debian/changelog >> tmp
 	mv tmp debian/changelog
 	debuild -S -sa -kxiangxw5689@126.com
-	git checkout -- debian/changelog
+	# restore
+	mv -f /tmp/thindict-changelog debian/changelog
 }
 
 function debuildAllSourceAndUpload()
@@ -47,8 +56,8 @@ function debuildAllSourceAndUpload()
 	dput ppa:xiangxw5689/thindict ../thindict_*_source.changes
 }
 
-# remove old packages
-rm -f ../thindict*
+# remove old packages and folders
+rm -rf ../thindict*
 # create origin source package
 createOriginSource
 # build
