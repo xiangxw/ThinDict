@@ -10,6 +10,7 @@
 #include <QToolTip>
 #include <QxtGlobalShortcut>
 #include <QSettings>
+#include <QMessageBox>
 #include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -241,6 +242,19 @@ void MainWindow::slotChangeShortcut(const QKeySequence &key)
 }
 
 /**
+ * @brief About
+ */
+void MainWindow::slotAbout()
+{
+    QMessageBox::about(this, tr("About"),
+                       tr("<strong>Homepage</strong>"
+                          "<p><a href='http://xiangxw.github.io/ThinDict/'>http://xiangxw.github.io/ThinDict/</a></p>"
+                          "<br>"
+                          "<strong>Dict source</strong>"
+                          "<p>Dict.cn(3G version):<a href='http://3g.dict.cn/'>http://3g.dict.cn/</a></p>"));
+}
+
+/**
  * @brief Create system tray icon.
  */
 void MainWindow::createSystemTrayIcon()
@@ -255,6 +269,8 @@ void MainWindow::createSystemTrayIcon()
     menu = new QMenu(this);
     menu->addAction(QIcon(":/images/settings.svg"), tr("&Settings"),
                     settingDialog, SLOT(show()));
+    menu->addAction(QIcon(":/images/about.svg"), tr("&About"),
+                    this, SLOT(slotAbout()));
     menu->addAction(QIcon(":/images/quit.svg"), tr("&Quit"), qApp, SLOT(quit()));
 
     systemTray->setContextMenu(menu);
