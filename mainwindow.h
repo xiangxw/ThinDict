@@ -32,7 +32,7 @@ private slots:
     void slotShowToolTip();
     void slotStartLoading();
     void slotLoadFinished(bool ok);
-    void slotSelectWord();
+    void slotEsc();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void slotToggleVisible();
     void slotHideToolTipLater();

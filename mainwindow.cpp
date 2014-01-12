@@ -176,12 +176,18 @@ void MainWindow::slotLoadFinished(bool ok)
 }
 
 /**
- * @brief Select all.
+ * @brief When Esc when is pressed.
  */
-void MainWindow::slotSelectWord()
+void MainWindow::slotEsc()
 {
-    ui->wordLineEdit->selectAll();
-    ui->wordLineEdit->setFocus();
+    if (ui->wordLineEdit->selectedText() == ui->wordLineEdit->text()) {
+        // hide when all text is selected
+        this->hide();
+    } else {
+        // select all text
+        ui->wordLineEdit->selectAll();
+        ui->wordLineEdit->setFocus();
+    }
 }
 
 /**
@@ -265,12 +271,12 @@ void MainWindow::createShortcuts()
     // create Esc shortcut
     QShortcut *escShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
     connect(escShortcut, SIGNAL(activated()),
-            this, SLOT(slotSelectWord()));
+            this, SLOT(slotEsc()));
 
     // create select word shortcut
     QShortcut *selectWordShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), this);
     connect(selectWordShortcut, SIGNAL(activated()),
-            this, SLOT(slotSelectWord()));
+            this, SLOT(slotEsc()));
 
     // create toggle visible global shortcut
     QKeySequence key(settings.value("ToggleVisibleShortcut").toString());
