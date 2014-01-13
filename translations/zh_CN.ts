@@ -24,27 +24,37 @@
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="252"/>
-        <source>&lt;strong&gt;Homepage&lt;/strong&gt;&lt;p&gt;&lt;a href=&apos;http://xiangxw.github.io/ThinDict/&apos;&gt;http://xiangxw.github.io/ThinDict/&lt;/a&gt;&lt;/p&gt;&lt;br&gt;&lt;strong&gt;Dict source&lt;/strong&gt;&lt;p&gt;Dict.cn:&amp;nbsp;&lt;a href=&apos;http://dict.cn/&apos;&gt;http://dict.cn/&lt;/a&gt;&lt;/p&gt;</source>
-        <translation>&lt;strong&gt;首页&lt;/strong&gt;&lt;p&gt;&lt;a href=&apos;http://xiangxw.github.io/ThinDict/&apos;&gt;http://xiangxw.github.io/ThinDict/&lt;/a&gt;&lt;/p&gt;&lt;br&gt;&lt;strong&gt;词典来源&lt;/strong&gt;&lt;p&gt;Dict.cn:&amp;nbsp;&lt;a href=&apos;http://dict.cn/&apos;&gt;http://dict.cn/&lt;/a&gt;&lt;/p&gt;</translation>
+        <location filename="../mainwindow.cpp" line="253"/>
+        <source>Homepage</source>
+        <translation>首页</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="270"/>
+        <location filename="../mainwindow.cpp" line="256"/>
+        <source>Dict Source</source>
+        <translation>词典来源</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="257"/>
+        <source>Dict.cn</source>
+        <translation>Dict.cn</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="273"/>
         <source>ThinDict, a lite dict program</source>
         <translation>ThinDict，Linux下简易的英汉词典</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="275"/>
+        <location filename="../mainwindow.cpp" line="278"/>
         <source>&amp;Settings</source>
         <translation>配置(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="277"/>
+        <location filename="../mainwindow.cpp" line="280"/>
         <source>&amp;About</source>
         <translation>关于(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="279"/>
+        <location filename="../mainwindow.cpp" line="282"/>
         <source>&amp;Quit</source>
         <translation>退出(&amp;Q)</translation>
     </message>

@@ -248,12 +248,14 @@ void MainWindow::slotAbout()
 {
     QMessageBox *messageBox;
 
-    messageBox = new QMessageBox(QMessageBox::NoIcon, tr("About"),
-                                 tr("<strong>Homepage</strong>"
-                                    "<p><a href='http://xiangxw.github.io/ThinDict/'>http://xiangxw.github.io/ThinDict/</a></p>"
-                                    "<br>"
-                                    "<strong>Dict source</strong>"
-                                    "<p>Dict.cn:&nbsp;<a href='http://dict.cn/'>http://dict.cn/</a></p>"),
+    messageBox = new QMessageBox(QMessageBox::NoIcon, tr("About") + " - v0.1.14",
+                                 // homepage
+                                 QString("<strong>%1</strong>").arg(tr("Homepage"))
+                                 + "<p><a href='http://xiangxw.github.io/ThinDict/'>http://xiangxw.github.io/ThinDict/</a></p>"
+                                 + "<br>"
+                                 // dict source
+                                 + QString("<strong>%1</strong>").arg(tr("Dict Source"))
+                                 + QString("<p>%1:&nbsp;<a href='http://dict.cn/'>http://dict.cn/</a></p>").arg(tr("Dict.cn")),
                                  QMessageBox::Ok, this);
     messageBox->setAttribute(Qt::WA_DeleteOnClose, true);
     messageBox->setAttribute(Qt::WA_QuitOnClose, false);
