@@ -246,12 +246,17 @@ void MainWindow::slotChangeShortcut(const QKeySequence &key)
  */
 void MainWindow::slotAbout()
 {
-    QMessageBox::about(this, tr("About"),
-                       tr("<strong>Homepage</strong>"
-                          "<p><a href='http://xiangxw.github.io/ThinDict/'>http://xiangxw.github.io/ThinDict/</a></p>"
-                          "<br>"
-                          "<strong>Dict source</strong>"
-                          "<p>Dict.cn(3G version):<a href='http://3g.dict.cn/'>http://3g.dict.cn/</a></p>"));
+    QMessageBox *messageBox;
+
+    messageBox = new QMessageBox(QMessageBox::NoIcon, tr("About"),
+                                 tr("<strong>Homepage</strong>"
+                                    "<p><a href='http://xiangxw.github.io/ThinDict/'>http://xiangxw.github.io/ThinDict/</a></p>"
+                                    "<br>"
+                                    "<strong>Dict source</strong>"
+                                    "<p>Dict.cn:&nbsp;<a href='http://3g.dict.cn/'>http://dict.cn/</a></p>"));
+    messageBox->setAttribute(Qt::WA_DeleteOnClose, true);
+    messageBox->setAttribute(Qt::WA_QuitOnClose, false);
+    messageBox->show();
 }
 
 /**

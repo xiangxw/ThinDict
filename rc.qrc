@@ -7,5 +7,6 @@
         <file>translations/zh_CN.qm</file>
         <file>thindict.desktop</file>
         <file>images/settings.svg</file>
+        <file>images/about.svg</file>
     </qresource>
 </RCC>
