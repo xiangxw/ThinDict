@@ -1,3 +1,9 @@
+thindict (0.1.15-1) stable; urgency=low
+
+  * Add search selected global shortcut
+
+ -- xiangxw <xiangxw5689@126.com>  Mon, 13 Jan 2014 16:54:32 +0800
+
 thindict (0.1.14-1) stable; urgency=low
 
   * Add about dialog.
