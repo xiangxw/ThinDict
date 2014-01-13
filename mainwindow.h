@@ -42,7 +42,7 @@ private slots:
 private:
     void createSystemTrayIcon();
     void createShortcuts();
-    void ensureAllRegionVisiable();
+    void ensureAllRegionVisible();
     void moveToScreenCenter();
     bool resultStillUseful() const;
 

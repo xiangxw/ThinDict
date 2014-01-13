@@ -157,7 +157,7 @@ void MainWindow::slotLoadFinished(bool ok)
 {
     if (ok) {
         if (!this->isActiveWindow() && resultStillUseful()) { // search word not in thindict window
-            ensureAllRegionVisiable();
+            ensureAllRegionVisible();
             if (this->isHidden()) {
                 this->show();
             }
@@ -315,9 +315,9 @@ void MainWindow::createShortcuts()
 }
 
 /**
- * @brief Ensure that all region of the window is visiable
+ * @brief Ensure that all region of the window is visible
  */
-void MainWindow::ensureAllRegionVisiable()
+void MainWindow::ensureAllRegionVisible()
 {
     QRect windowRect(QCursor::pos(), this->sizeHint());
     QRect availableRect = qApp->desktop()->availableGeometry();
