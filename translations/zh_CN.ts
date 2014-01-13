@@ -25,8 +25,8 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="252"/>
-        <source>&lt;strong&gt;Homepage&lt;/strong&gt;&lt;p&gt;&lt;a href=&apos;http://xiangxw.github.io/ThinDict/&apos;&gt;http://xiangxw.github.io/ThinDict/&lt;/a&gt;&lt;/p&gt;&lt;br&gt;&lt;strong&gt;Dict source&lt;/strong&gt;&lt;p&gt;Dict.cn:&amp;nbsp;&lt;a href=&apos;http://3g.dict.cn/&apos;&gt;http://dict.cn/&lt;/a&gt;&lt;/p&gt;</source>
-        <translation>&lt;strong&gt;首页&lt;/strong&gt;&lt;p&gt;&lt;a href=&apos;http://xiangxw.github.io/ThinDict/&apos;&gt;http://xiangxw.github.io/ThinDict/&lt;/a&gt;&lt;/p&gt;&lt;br&gt;&lt;strong&gt;词典来源&lt;/strong&gt;&lt;p&gt;Dict.cn:&amp;nbsp;&lt;a href=&apos;http://3g.dict.cn/&apos;&gt;http://dict.cn/&lt;/a&gt;&lt;/p&gt;</translation>
+        <source>&lt;strong&gt;Homepage&lt;/strong&gt;&lt;p&gt;&lt;a href=&apos;http://xiangxw.github.io/ThinDict/&apos;&gt;http://xiangxw.github.io/ThinDict/&lt;/a&gt;&lt;/p&gt;&lt;br&gt;&lt;strong&gt;Dict source&lt;/strong&gt;&lt;p&gt;Dict.cn:&amp;nbsp;&lt;a href=&apos;http://dict.cn/&apos;&gt;http://dict.cn/&lt;/a&gt;&lt;/p&gt;</source>
+        <translation>&lt;strong&gt;首页&lt;/strong&gt;&lt;p&gt;&lt;a href=&apos;http://xiangxw.github.io/ThinDict/&apos;&gt;http://xiangxw.github.io/ThinDict/&lt;/a&gt;&lt;/p&gt;&lt;br&gt;&lt;strong&gt;词典来源&lt;/strong&gt;&lt;p&gt;Dict.cn:&amp;nbsp;&lt;a href=&apos;http://dict.cn/&apos;&gt;http://dict.cn/&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="270"/>
