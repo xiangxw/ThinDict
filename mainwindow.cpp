@@ -163,10 +163,12 @@ void MainWindow::slotLoadFinished(bool ok)
             }
             this->activateWindow();
             this->raise();
+            // scroll to content
+            webview->page()->mainFrame()->evaluateJavaScript("scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
+            m_popup = true;
         }
-        m_popup = true;
+        slotSelectWord();
         toolTipWidget->hide();
-        webview->page()->mainFrame()->evaluateJavaScript("scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
     } else {
         m_popup = false;
         if (resultStillUseful()) {
