@@ -211,6 +211,7 @@ void MainWindow::slotToggleVisible()
         this->show();
         this->activateWindow();
         this->raise();
+        slotSelectWord();
     }
     m_popup = false;
 }
