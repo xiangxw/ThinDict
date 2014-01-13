@@ -37,6 +37,7 @@ private slots:
     void slotToggleVisible();
     void slotHideToolTipLater();
     void slotChangeShortcut(const QKeySequence &key);
+    void slotPopupSearchToggled(bool toggled);
     void slotAbout();
 
 private:

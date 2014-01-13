@@ -58,9 +58,6 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(slotLoadFinished(bool)));
     connect(settingDialog, SIGNAL(shortcutChanged(QKeySequence)),
             this, SLOT(slotChangeShortcut(QKeySequence)));
-    // select a word
-    connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
-            this, SLOT(slotShowToolTip()));
 }
 
 MainWindow::~MainWindow()
@@ -243,6 +240,23 @@ void MainWindow::slotChangeShortcut(const QKeySequence &key)
 }
 
 /**
+ * @brief Enable or disable popup search
+ */
+void MainWindow::slotPopupSearchToggled(bool toggled)
+{
+    QSettings settings;
+
+    settings.setValue("PopupSearchEnabled", toggled);
+    if (toggled) {
+        connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
+                this, SLOT(slotShowToolTip()));
+    } else {
+        disconnect(QApplication::clipboard(), SIGNAL(selectionChanged()),
+                   this, SLOT(slotShowToolTip()));
+    }
+}
+
+/**
  * @brief About
  */
 void MainWindow::slotAbout()
@@ -270,6 +284,7 @@ void MainWindow::slotAbout()
 void MainWindow::createSystemTrayIcon()
 {
     QMenu *menu;
+    QSettings settings;
 
     systemTray = new QSystemTrayIcon(QIcon(":/images/thindict.svg"), this);
     systemTray->setToolTip(tr("ThinDict, a lite dict program"));
@@ -277,10 +292,27 @@ void MainWindow::createSystemTrayIcon()
             this, SLOT(slotSystemTrayActivated(QSystemTrayIcon::ActivationReason)));
 
     menu = new QMenu(this);
+    // settings
     menu->addAction(QIcon(":/images/settings.svg"), tr("&Settings"),
                     settingDialog, SLOT(show()));
+    // popup search
+    QAction *popupSearchToggleAction;
+    bool popupSearchEnabled;
+    popupSearchToggleAction = new QAction(tr("&Popup Search"), this);
+    popupSearchToggleAction->setCheckable(true);
+    popupSearchEnabled = settings.value("PopupSearchEnabled", "true").toBool();
+    if (popupSearchEnabled) {
+        connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
+                this, SLOT(slotShowToolTip()));
+    }
+    popupSearchToggleAction->setChecked(popupSearchEnabled);
+    connect(popupSearchToggleAction, SIGNAL(toggled(bool)),
+            this, SLOT(slotPopupSearchToggled(bool)));
+    menu->addAction(popupSearchToggleAction);
+    // about
     menu->addAction(QIcon(":/images/about.svg"), tr("&About"),
                     this, SLOT(slotAbout()));
+    // quit
     menu->addAction(QIcon(":/images/quit.svg"), tr("&Quit"), qApp, SLOT(quit()));
 
     systemTray->setContextMenu(menu);
