@@ -236,9 +236,10 @@ void MainWindow::slotChangeShortcut(const QKeySequence &key)
 {
     toggleVisibleShortcut->disconnect();
 
-    toggleVisibleShortcut->setShortcut(key);
-    connect(toggleVisibleShortcut, SIGNAL(activated()),
-            this, SLOT(slotToggleVisible()));
+    if (toggleVisibleShortcut->setShortcut(key)) {
+        connect(toggleVisibleShortcut, SIGNAL(activated()),
+                this, SLOT(slotToggleVisible()));
+    }
 }
 
 /**
