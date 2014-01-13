@@ -53,7 +53,11 @@ function debuildAllSourceAndUpload()
 	for (( i = 0; i < ${#UBUNTU_SERIES[@]}; i++ )); do
 		debuildSource ${UBUNTU_SERIES[$i]}
 	done
-	dput ppa:xiangxw5689/thindict ../thindict_*_source.changes
+	if [[ "$1" == "test" ]]; then
+		dput ppa:xiangxw5689/thindict-test ../thindict_*_source.changes
+	else
+		dput ppa:xiangxw5689/thindict ../thindict_*_source.changes
+	fi
 }
 
 # remove old packages and folders
@@ -61,8 +65,8 @@ rm -rf ../thindict*
 # create origin source package
 createOriginSource
 # build
-if [[ $# -eq 0 ]]; then
-	debuildAllSourceAndUpload
-elif [[ "$1" == "binary" ]]; then
+if [[ "$1" == "binary" ]]; then
 	debuildBinary
+else
+	debuildAllSourceAndUpload
 fi
