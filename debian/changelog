@@ -1,3 +1,9 @@
+thindict (0.1.14-1) stable; urgency=low
+
+  * Add about dialog.
+
+ -- xiangxw <xiangxw5689@126.com>  Mon, 13 Jan 2014 10:42:27 +0800
+
 thindict (0.1.13-1) stable; urgency=low
 
   * Bug fix.
