@@ -19,7 +19,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_popup(false)
+    m_searchReason(DefaultSearch)
 {
     // setup ui
     ui->setupUi(this);
@@ -45,17 +45,17 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setAttribute(Qt::WA_QuitOnClose, false);
 
     connect(ui->wordLineEdit, SIGNAL(returnPressed()),
-            this, SLOT(slotSearchRequested()));
+            this, SLOT(slotSearch()));
     connect(ui->searchPushButton, SIGNAL(clicked()),
-            this, SLOT(slotSearchRequested()));
+            this, SLOT(slotSearch()));
     connect(toolTipWidget, SIGNAL(enterToolTip()),
-            this, SLOT(slotStartLoading()));
+            this, SLOT(slotStartPopupSearch()));
     connect(toolTipWidget, SIGNAL(enterToolTip()),
             toolTipWidget, SLOT(stopHiding()));
     connect(toolTipWidget, SIGNAL(leaveToolTip()),
             this, SLOT(slotHideToolTipLater()));
     connect(webview, SIGNAL(loadFinished(bool)),
-            this, SLOT(slotLoadFinished(bool)));
+            this, SLOT(slotSearchFinished(bool)));
     connect(settingDialog, SIGNAL(toggleVisibleShortcutChanged(QKeySequence)),
             this, SLOT(slotToggleVisibleShortcutChanged(QKeySequence)));
     connect(settingDialog, SIGNAL(searchSelectedShortcutChanged(QKeySequence)),
@@ -72,11 +72,20 @@ MainWindow::~MainWindow()
 
 bool MainWindow::event(QEvent *event)
 {
-    // TODO do not hide when the popup window is moving
-    if (event->type() == QEvent::WindowDeactivate && m_popup) {
-        this->hide();
-        toolTipWidget->hide();
-        m_popup = false;
+    if (event->type() == QEvent::WindowDeactivate) {
+        switch (m_searchReason) {
+        case PopupSearch:
+            this->hide();
+            toolTipWidget->hide();
+            break;
+
+        case SelectedSearch:
+            this->hide();
+            break;
+
+        default:
+            break;
+        }
     }
     return QMainWindow::event(event);
 }
@@ -113,7 +122,7 @@ static void refineWord(QString &word)
     }
 }
 
-void MainWindow::slotSearchRequested()
+void MainWindow::slotSearch()
 {
     QString word;
 
@@ -142,7 +151,7 @@ void MainWindow::slotShowToolTip()
     slotHideToolTipLater();
 }
 
-void MainWindow::slotStartLoading()
+void MainWindow::slotStartPopupSearch()
 {
     static QMovie *movie = new QMovie(":/images/loading.gif", "GIF", this);
 
@@ -151,35 +160,47 @@ void MainWindow::slotStartLoading()
     movie->start();
 
     ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));
-    slotSearchRequested();
+    m_searchReason = PopupSearch;
+    slotSearch();
 }
 
 /**
- * @brief Load finished slot
+ * @brief Search finished slot
  */
-void MainWindow::slotLoadFinished(bool ok)
+void MainWindow::slotSearchFinished(bool ok)
 {
-    if (ok) {
-        if (!this->isActiveWindow() && resultStillUseful()) { // search word not in thindict window
-            ensureAllRegionVisible();
-            if (this->isHidden()) {
-                this->show();
+    if (!searchResultStillUseful()) {
+        return;
+    }
+
+    if (ok) { // search succeeded
+        switch (m_searchReason) {
+        case PopupSearch:
+            toolTipWidget->hide();
+        case SelectedSearch:
+            if (!this->isActiveWindow()) {
+                ensureWindowRegionVisible();
+                if (this->isHidden()) {
+                    this->show();
+                }
+                this->activateWindow();
+                this->raise();
             }
-            this->activateWindow();
-            this->raise();
-            m_popup = true;
+            break;
+
+        default:
+            break;
         }
-        toolTipWidget->hide();
         slotSelectWord();
         // scroll to content
-        webview->page()->mainFrame()->evaluateJavaScript("scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
-    } else {
-        m_popup = false;
-        if (resultStillUseful()) {
-            QToolTip::showText(QCursor::pos(), tr("Search failed! Please check your network."));
-        }
+        webview->page()->mainFrame()->evaluateJavaScript(
+                    "scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
+    } else { // search failed
+        QToolTip::showText(QCursor::pos(), tr("Search failed! Please check your network."));
         slotHideToolTipLater();
     }
+
+    m_searchReason = DefaultSearch;
 }
 
 /**
@@ -219,16 +240,16 @@ void MainWindow::slotToggleVisible()
         this->raise();
         slotSelectWord();
     }
-    m_popup = false;
 }
 
 /**
  * @brief Search selected word
  */
-void MainWindow::slotSearchSelected()
+void MainWindow::slotStartSelectedSearch()
 {
     ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));
-    slotSearchRequested();
+    m_searchReason = SelectedSearch;
+    slotSearch();
 }
 
 /**
@@ -260,7 +281,7 @@ void MainWindow::slotSearchSelectedShortcutChanged(const QKeySequence &key)
 
     searchSelectedShortcut->setShortcut(key);
     connect(searchSelectedShortcut, SIGNAL(activated()),
-            this, SLOT(slotSearchSelected()));
+            this, SLOT(slotStartSelectedSearch()));
 }
 
 /**
@@ -344,14 +365,14 @@ void MainWindow::createShortcuts()
     searchSelectedShortcut = new QxtGlobalShortcut(key, this);
     if (!key.isEmpty()) {
         connect(searchSelectedShortcut, SIGNAL(activated()),
-                this, SLOT(slotSearchSelected()));
+                this, SLOT(slotStartSelectedSearch()));
     }
 }
 
 /**
  * @brief Ensure that all region of the window is visible
  */
-void MainWindow::ensureAllRegionVisible()
+void MainWindow::ensureWindowRegionVisible()
 {
     QRect windowRect(QCursor::pos(), this->sizeHint());
     QRect availableRect = qApp->desktop()->availableGeometry();
@@ -391,12 +412,22 @@ void MainWindow::moveToScreenCenter()
 /**
  * @brief Check whether the search result is still useful.
  */
-bool MainWindow::resultStillUseful() const
+bool MainWindow::searchResultStillUseful() const
 {
-    if (toolTipWidget->isHidden() || !toolTipWidget->underMouse()) {
-        return false;
+    bool ret = true;
+
+    switch (m_searchReason) {
+    case PopupSearch:
+        if (toolTipWidget->isHidden() || !toolTipWidget->underMouse()) {
+            ret = false;
+        }
+        break;
+
+    default:
+        break;
     }
-    return true;
+
+    return ret;
 }
 
 ToolTipWidget::ToolTipWidget(QWidget *parent)

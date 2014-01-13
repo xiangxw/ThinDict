@@ -24,18 +24,20 @@ public:
     ~MainWindow();
     QSize sizeHint() const {return QSize(400, 300);}
 
+    enum SearchReason {DefaultSearch, PopupSearch, SelectedSearch};
+
 protected:
     virtual bool event(QEvent *event);
 
 private slots:
-    void slotSearchRequested();
+    void slotSearch();
     void slotShowToolTip();
-    void slotStartLoading();
-    void slotLoadFinished(bool ok);
+    void slotStartPopupSearch();
+    void slotSearchFinished(bool ok);
     void slotSelectWord();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void slotToggleVisible();
-    void slotSearchSelected();
+    void slotStartSelectedSearch();
     void slotHideToolTipLater();
     void slotToggleVisibleShortcutChanged(const QKeySequence &key);
     void slotSearchSelectedShortcutChanged(const QKeySequence &key);
@@ -44,9 +46,9 @@ private slots:
 private:
     void createSystemTrayIcon();
     void createShortcuts();
-    void ensureAllRegionVisible();
+    void ensureWindowRegionVisible();
     void moveToScreenCenter();
-    bool resultStillUseful() const;
+    bool searchResultStillUseful() const;
 
     Ui::MainWindow *ui;
     QWebView *webview;
@@ -55,7 +57,7 @@ private:
     SettingDialog *settingDialog;
     QxtGlobalShortcut *toggleVisibleShortcut;
     QxtGlobalShortcut *searchSelectedShortcut;
-    bool m_popup; // whether this window is a popup or not
+    SearchReason m_searchReason;
 };
 
 /**
