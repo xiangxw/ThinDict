@@ -253,9 +253,11 @@ void MainWindow::slotAbout()
                                     "<p><a href='http://xiangxw.github.io/ThinDict/'>http://xiangxw.github.io/ThinDict/</a></p>"
                                     "<br>"
                                     "<strong>Dict source</strong>"
-                                    "<p>Dict.cn:&nbsp;<a href='http://dict.cn/'>http://dict.cn/</a></p>"));
+                                    "<p>Dict.cn:&nbsp;<a href='http://dict.cn/'>http://dict.cn/</a></p>"),
+                                 QMessageBox::Ok, this);
     messageBox->setAttribute(Qt::WA_DeleteOnClose, true);
     messageBox->setAttribute(Qt::WA_QuitOnClose, false);
+    messageBox->setWindowModality(Qt::NonModal);
     messageBox->show();
 }
 
