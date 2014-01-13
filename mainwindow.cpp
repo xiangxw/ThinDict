@@ -56,8 +56,10 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(slotHideToolTipLater()));
     connect(webview, SIGNAL(loadFinished(bool)),
             this, SLOT(slotLoadFinished(bool)));
-    connect(settingDialog, SIGNAL(shortcutChanged(QKeySequence)),
-            this, SLOT(slotChangeShortcut(QKeySequence)));
+    connect(settingDialog, SIGNAL(toggleVisibleShortcutChanged(QKeySequence)),
+            this, SLOT(slotToggleVisibleShortcutChanged(QKeySequence)));
+    connect(settingDialog, SIGNAL(searchSelectedShortcutChanged(QKeySequence)),
+            this, SLOT(slotSearchSelectedShortcutChanged(QKeySequence)));
     // select a word
     connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
             this, SLOT(slotShowToolTip()));
@@ -118,7 +120,9 @@ void MainWindow::slotSearchRequested()
     word = ui->wordLineEdit->text();
     refineWord(word);
 
-    webview->load(QUrl("http://3g.dict.cn/s.php?q=" + word));
+    if (!word.isEmpty()) {
+        webview->load(QUrl("http://3g.dict.cn/s.php?q=" + word));
+    }
 }
 
 void MainWindow::slotShowToolTip()
@@ -163,12 +167,12 @@ void MainWindow::slotLoadFinished(bool ok)
             }
             this->activateWindow();
             this->raise();
-            // scroll to content
-            webview->page()->mainFrame()->evaluateJavaScript("scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
             m_popup = true;
         }
-        slotSelectWord();
         toolTipWidget->hide();
+        slotSelectWord();
+        // scroll to content
+        webview->page()->mainFrame()->evaluateJavaScript("scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
     } else {
         m_popup = false;
         if (resultStillUseful()) {
@@ -219,6 +223,15 @@ void MainWindow::slotToggleVisible()
 }
 
 /**
+ * @brief Search selected word
+ */
+void MainWindow::slotSearchSelected()
+{
+    ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));
+    slotSearchRequested();
+}
+
+/**
  * @brief Hide tooltip later
  */
 void MainWindow::slotHideToolTipLater()
@@ -227,15 +240,27 @@ void MainWindow::slotHideToolTipLater()
 }
 
 /**
- * @brief Change shortcut
+ * @brief Change toggle visible shortcut
  */
-void MainWindow::slotChangeShortcut(const QKeySequence &key)
+void MainWindow::slotToggleVisibleShortcutChanged(const QKeySequence &key)
 {
     toggleVisibleShortcut->disconnect();
 
     toggleVisibleShortcut->setShortcut(key);
     connect(toggleVisibleShortcut, SIGNAL(activated()),
             this, SLOT(slotToggleVisible()));
+}
+
+/**
+ * @brief Change search selected shortcut
+ */
+void MainWindow::slotSearchSelectedShortcutChanged(const QKeySequence &key)
+{
+    searchSelectedShortcut->disconnect();
+
+    searchSelectedShortcut->setShortcut(key);
+    connect(searchSelectedShortcut, SIGNAL(activated()),
+            this, SLOT(slotSearchSelected()));
 }
 
 /**
@@ -289,6 +314,7 @@ void MainWindow::createSystemTrayIcon()
 void MainWindow::createShortcuts()
 {
     QSettings settings;
+    QKeySequence key;
 
     // create Esc shortcut
     QShortcut *escShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
@@ -306,11 +332,19 @@ void MainWindow::createShortcuts()
             qApp, SLOT(quit()));
 
     // create toggle visible global shortcut
-    QKeySequence key(settings.value("ToggleVisibleShortcut").toString());
+    key = QKeySequence(settings.value("ToggleVisibleShortcut").toString());
     toggleVisibleShortcut = new QxtGlobalShortcut(key, this);
     if (!key.isEmpty()) {
         connect(toggleVisibleShortcut, SIGNAL(activated()),
                 this, SLOT(slotToggleVisible()));
+    }
+
+    // create search selected global shortcut
+    key = QKeySequence(settings.value("SearchSelectedShortcut").toString());
+    searchSelectedShortcut = new QxtGlobalShortcut(key, this);
+    if (!key.isEmpty()) {
+        connect(searchSelectedShortcut, SIGNAL(activated()),
+                this, SLOT(slotSearchSelected()));
     }
 }
 

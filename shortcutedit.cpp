@@ -60,11 +60,8 @@ void ShortcutEdit::keyPressEvent(QKeyEvent *event)
 
     // build key sequence
     if (key != Qt::Key_No && modifiers) {
-        QSettings settings;
-
         m_key = QKeySequence(key | modifiers);
         this->setText(m_key.toString(QKeySequence::NativeText));
-        settings.setValue("ToggleVisibleShortcut", m_key.toString());
         emit shortcutChanged(m_key);
     }
 }

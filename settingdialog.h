@@ -16,10 +16,13 @@ public:
     ~SettingDialog();
 
 signals:
-    void shortcutChanged(const QKeySequence &key);
+    void toggleVisibleShortcutChanged(const QKeySequence &key);
+    void searchSelectedShortcutChanged(const QKeySequence &key);
 
 private slots:
     void slotToggleAutostart(bool checked);
+    void slotToggleVisibleShortcutChanged(const QKeySequence &key);
+    void slotSearchSelectedShortcutChanged(const QKeySequence &key);
 
 private:
     void loadSettings();

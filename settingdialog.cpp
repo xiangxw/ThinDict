@@ -19,7 +19,14 @@ SettingDialog::SettingDialog(QWidget *parent)
     connect(ui->autostartCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(slotToggleAutostart(bool)));
     connect(ui->toggleVisibleShortcutEdit, SIGNAL(shortcutChanged(QKeySequence)),
-            this, SIGNAL(shortcutChanged(QKeySequence)));
+            this, SIGNAL(toggleVisibleShortcutChanged(QKeySequence)));
+    connect(ui->toggleVisibleShortcutEdit, SIGNAL(shortcutChanged(QKeySequence)),
+            this, SLOT(slotToggleVisibleShortcutChanged(QKeySequence)));
+    connect(ui->searchSelectedShortcutEdit, SIGNAL(shortcutChanged(QKeySequence)),
+            this, SIGNAL(searchSelectedShortcutChanged(QKeySequence)));
+    connect(ui->searchSelectedShortcutEdit, SIGNAL(shortcutChanged(QKeySequence)),
+            this, SLOT(slotSearchSelectedShortcutChanged(QKeySequence)));
+
 
     // Esc
     QShortcut *escShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this, SLOT(close()));
@@ -47,6 +54,20 @@ void SettingDialog::slotToggleAutostart(bool checked)
     }
 }
 
+void SettingDialog::slotToggleVisibleShortcutChanged(const QKeySequence &key)
+{
+    QSettings settings;
+
+    settings.setValue("ToggleVisibleShortcut", key.toString());
+}
+
+void SettingDialog::slotSearchSelectedShortcutChanged(const QKeySequence &key)
+{
+    QSettings settings;
+
+    settings.setValue("SearchSelectedShortcut", key.toString());
+}
+
 /**
  * @brief Load settings
  */
@@ -58,4 +79,6 @@ void SettingDialog::loadSettings()
                 settings.value("Autostart", false).toBool());
     ui->toggleVisibleShortcutEdit->setKey(
                 QKeySequence(settings.value("ToggleVisibleShortcut").toString()));
+    ui->searchSelectedShortcutEdit->setKey(
+                QKeySequence(settings.value("SearchSelectedShortcut").toString()));
 }

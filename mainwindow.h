@@ -35,8 +35,10 @@ private slots:
     void slotSelectWord();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void slotToggleVisible();
+    void slotSearchSelected();
     void slotHideToolTipLater();
-    void slotChangeShortcut(const QKeySequence &key);
+    void slotToggleVisibleShortcutChanged(const QKeySequence &key);
+    void slotSearchSelectedShortcutChanged(const QKeySequence &key);
     void slotAbout();
 
 private:
@@ -52,6 +54,7 @@ private:
     QSystemTrayIcon *systemTray;
     SettingDialog *settingDialog;
     QxtGlobalShortcut *toggleVisibleShortcut;
+    QxtGlobalShortcut *searchSelectedShortcut;
     bool m_popup; // whether this window is a popup or not
 };
 
