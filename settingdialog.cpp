@@ -1,6 +1,7 @@
 #include <QSettings>
 #include <QFile>
 #include <QDir>
+#include <QShortcut>
 #include "settingdialog.h"
 #include "ui_settingdialog.h"
 
@@ -19,6 +20,10 @@ SettingDialog::SettingDialog(QWidget *parent)
             this, SLOT(slotToggleAutostart(bool)));
     connect(ui->toggleVisibleShortcutEdit, SIGNAL(shortcutChanged(QKeySequence)),
             this, SIGNAL(shortcutChanged(QKeySequence)));
+
+    // Esc
+    QShortcut *escShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this, SLOT(close()));
+    (void)escShortcut;
 }
 
 SettingDialog::~SettingDialog()
