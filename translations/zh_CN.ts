@@ -14,47 +14,52 @@
         <translation>搜索(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="179"/>
+        <location filename="../mainwindow.cpp" line="196"/>
         <source>Search failed! Please check your network.</source>
         <translation>搜索失败,请检查网络连接～</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="273"/>
+        <location filename="../mainwindow.cpp" line="309"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="275"/>
+        <location filename="../mainwindow.cpp" line="311"/>
         <source>Homepage</source>
         <translation>首页</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="279"/>
+        <location filename="../mainwindow.cpp" line="315"/>
         <source>Dict Source</source>
         <translation>词典来源</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="280"/>
+        <location filename="../mainwindow.cpp" line="316"/>
         <source>Dict.cn</source>
         <translation>Dict.cn</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="296"/>
+        <location filename="../mainwindow.cpp" line="333"/>
         <source>ThinDict, a lite dict program</source>
         <translation>ThinDict，Linux下简易的英汉词典</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="301"/>
+        <location filename="../mainwindow.cpp" line="339"/>
         <source>&amp;Settings</source>
         <translation>配置(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="303"/>
+        <location filename="../mainwindow.cpp" line="344"/>
+        <source>&amp;Popup Search</source>
+		<translation>开启/关闭划词翻译(&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="356"/>
         <source>&amp;About</source>
         <translation>关于(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="305"/>
+        <location filename="../mainwindow.cpp" line="359"/>
         <source>&amp;Quit</source>
         <translation>退出(&amp;Q)</translation>
     </message>
@@ -95,6 +100,14 @@
         <location filename="../ui/settingdialog.ui" line="106"/>
         <source>&amp;Close</source>
         <translation>关闭(&amp;C)</translation>
+    </message>
+</context>
+<context>
+    <name>ShortcutEdit</name>
+    <message>
+        <location filename="../shortcutedit.cpp" line="72"/>
+        <source>Empty</source>
+        <translation>空</translation>
     </message>
 </context>
 </TS>
