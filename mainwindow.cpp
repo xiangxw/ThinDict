@@ -45,9 +45,9 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setAttribute(Qt::WA_QuitOnClose, false);
 
     connect(ui->wordLineEdit, SIGNAL(returnPressed()),
-            this, SLOT(slotSearch()));
+            this, SLOT(slotStartDefaultSearch()));
     connect(ui->searchPushButton, SIGNAL(clicked()),
-            this, SLOT(slotSearch()));
+            this, SLOT(slotStartDefaultSearch()));
     connect(toolTipWidget, SIGNAL(enterToolTip()),
             this, SLOT(slotStartPopupSearch()));
     connect(toolTipWidget, SIGNAL(enterToolTip()),
@@ -119,7 +119,7 @@ static void refineWord(QString &word)
     }
 }
 
-void MainWindow::slotSearch()
+void MainWindow::doSearch()
 {
     QString word;
 
@@ -148,6 +148,12 @@ void MainWindow::slotShowToolTip()
     slotHideToolTipLater();
 }
 
+void MainWindow::slotStartDefaultSearch()
+{
+    m_searchReason = DefaultSearch;
+    doSearch();
+}
+
 void MainWindow::slotStartPopupSearch()
 {
     static QMovie *movie = new QMovie(":/images/loading.gif", "GIF", this);
@@ -158,7 +164,7 @@ void MainWindow::slotStartPopupSearch()
 
     ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));
     m_searchReason = PopupSearch;
-    slotSearch();
+    doSearch();
 }
 
 /**
@@ -196,8 +202,6 @@ void MainWindow::slotSearchFinished(bool ok)
         QToolTip::showText(QCursor::pos(), tr("Search failed! Please check your network."));
         slotHideToolTipLater();
     }
-
-    m_searchReason = DefaultSearch;
 }
 
 /**
@@ -237,6 +241,8 @@ void MainWindow::slotToggleVisible()
         this->raise();
         slotSelectWord();
     }
+
+    m_searchReason = DefaultSearch;
 }
 
 /**
@@ -246,7 +252,7 @@ void MainWindow::slotStartSelectedSearch()
 {
     ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));
     m_searchReason = SelectedSearch;
-    slotSearch();
+    doSearch();
 }
 
 /**

@@ -30,14 +30,14 @@ protected:
     virtual bool event(QEvent *event);
 
 private slots:
-    void slotSearch();
     void slotShowToolTip();
+    void slotStartDefaultSearch();
     void slotStartPopupSearch();
+    void slotStartSelectedSearch();
     void slotSearchFinished(bool ok);
     void slotSelectWord();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void slotToggleVisible();
-    void slotStartSelectedSearch();
     void slotHideToolTipLater();
     void slotToggleVisibleShortcutChanged(const QKeySequence &key);
     void slotSearchSelectedShortcutChanged(const QKeySequence &key);
@@ -45,6 +45,7 @@ private slots:
     void slotAbout();
 
 private:
+    void doSearch();
     void createSystemTrayIcon();
     void createShortcuts();
     void ensureWindowRegionVisible();
