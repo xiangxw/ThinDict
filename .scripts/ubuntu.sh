@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x # enable debug
 
 # for example: 0.1.1
 THINDICT_VERSION=$(awk 'NR == 1 {print substr($2, 2, index($2, "-") - 2)}' debian/changelog)
@@ -68,5 +69,5 @@ createOriginSource
 if [[ "$1" == "binary" ]]; then
 	debuildBinary
 else
-	debuildAllSourceAndUpload
+	debuildAllSourceAndUpload $1
 fi

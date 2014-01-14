@@ -64,4 +64,12 @@ void ShortcutEdit::keyPressEvent(QKeyEvent *event)
         this->setText(m_key.toString(QKeySequence::NativeText));
         emit shortcutChanged(m_key);
     }
+    // clear key sequence
+    if (!modifiers && (key == Qt::Key_Delete
+                       || key == Qt::Key_Backspace
+                       || key == Qt::Key_Space)) {
+        m_key = QKeySequence();
+        this->setText(tr("Empty"));
+        emit shortcutChanged(m_key);
+    }
 }
