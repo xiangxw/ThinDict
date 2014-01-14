@@ -312,7 +312,7 @@ void MainWindow::slotAbout()
 {
     QMessageBox *messageBox;
 
-    messageBox = new QMessageBox(QMessageBox::NoIcon, tr("About") + " - v0.1.15",
+    messageBox = new QMessageBox(QMessageBox::NoIcon, tr("About") + " - v0.1.16",
                                  // homepage
                                  QString("<strong>%1</strong>").arg(tr("Homepage"))
                                  + "<p><a href='http://xiangxw.github.io/ThinDict/'>http://xiangxw.github.io/ThinDict/</a></p>"

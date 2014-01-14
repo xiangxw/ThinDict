@@ -1,3 +1,9 @@
+thindict (0.1.16-1) stable; urgency=low
+
+  * Support enable/disable popup search
+
+ -- xiangxw <xiangxw5689@126.com>  Tue, 14 Jan 2014 10:02:54 +0800
+
 thindict (0.1.15-1) stable; urgency=low
 
   * Add search selected global shortcut
