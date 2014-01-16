@@ -132,7 +132,6 @@ static inline bool isSpecialEncoded(const QChar &ch)
     if (ch == '#'
             || ch == '&'
             || ch == '+') {
-        // TODO '&' and '+' still do not work
         return true;
     }
     return false;
@@ -150,7 +149,7 @@ void MainWindow::doSearch()
             // encode special search with one special char
             word = QUrl::toPercentEncoding(word);
         }
-        webview->load(QUrl("http://3g.dict.cn/s.php?q=" + word));
+        webview->load(QUrl::fromUserInput("http://3g.dict.cn/s.php?q=" + word));
     }
 }
 
