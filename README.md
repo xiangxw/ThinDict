@@ -5,9 +5,9 @@
 #### ubuntu下（支持的版本为12.04-14.04）：
 
 ```
-    sudo apt-add-repository ppa:xiangxw5689/thindict
+    sudo apt-add-repository -y ppa:xiangxw5689/thindict
     sudo apt-get update
-    sudo apt-get install thindict
+    sudo apt-get -y install thindict
 ```
 
 卸载：`sudo apt-get purge thindict`
