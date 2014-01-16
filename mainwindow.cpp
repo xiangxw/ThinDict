@@ -109,6 +109,10 @@ static bool isSpecial(const QChar &ch)
 static void refineWord(QString &word)
 {
     word = word.trimmed();
+    if (word.length() == 1) { // for one special char, do not remove it
+        return;
+    }
+
     // remove special chars at the beginning of the word
     while (!word.isEmpty() && isSpecial(*(word.begin()))) {
         word.remove(0, 1);
