@@ -123,6 +123,21 @@ static void refineWord(QString &word)
     }
 }
 
+/**
+ * @brief ch is a special char and should be encoded with percent mark('%')
+ * This function is for http://3g.dict.cn, other dict websites may be diffent.
+ */
+static inline bool isSpecialEncoded(const QChar &ch)
+{
+    if (ch == '#'
+            || ch == '&'
+            || ch == '+') {
+        // TODO '&' and '+' still do not work
+        return true;
+    }
+    return false;
+}
+
 void MainWindow::doSearch()
 {
     QString word;
@@ -131,6 +146,10 @@ void MainWindow::doSearch()
     refineWord(word);
 
     if (!word.isEmpty()) {
+        if (word.length() == 1 && isSpecialEncoded(word[0])) {
+            // encode special search with one special char
+            word = QUrl::toPercentEncoding(word);
+        }
         webview->load(QUrl("http://3g.dict.cn/s.php?q=" + word));
     }
 }
