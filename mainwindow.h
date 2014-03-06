@@ -45,12 +45,16 @@ private slots:
     void slotAbout();
 
 private:
-    void doSearch();
+    void doSearch(const QString &str);
+    bool guessSearch(const QString &str, int count);
+    bool removeHyphenGuessSearch(const QString &str);
     void createSystemTrayIcon();
     void createShortcuts();
     void ensureWindowRegionVisible();
     void moveToScreenCenter();
     bool searchResultStillUseful() const;
+    bool searchFinishedWithResult() const;
+    void notifySearchFailure();
 
     Ui::MainWindow *ui;
     QWebView *webview;

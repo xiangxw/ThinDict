@@ -16,6 +16,61 @@
 #include "ui_mainwindow.h"
 #include "settingdialog.h"
 
+/**
+ * @brief ch is a special char and should be encoded with percent mark('%')
+ * This function is for http://3g.dict.cn, other dict websites may be diffent.
+ */
+static inline bool isSpecialEncoded(const QChar &ch)
+{
+    if (ch == '#'
+            || ch == '&'
+            || ch == '+') {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * @brief ch is a special char
+ */
+static bool isSpecial(const QChar &ch)
+{
+    static const char *chars = "~`!@#$%^&*()-_=+[{]};:'\"\\|,<.>/?* \t\n\r";
+    static const int len = strlen(chars);
+
+    for (int i = 0; i < len; ++i) {
+        if (ch == chars[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * @brief Refine search word
+ */
+static void refineWord(QString &word)
+{
+    word = word.trimmed();
+    if (word.length() == 1) { // for one special char, do not remove it
+        return;
+    }
+
+    // remove special chars at the beginning of the word
+    while (!word.isEmpty() && isSpecial(*(word.begin()))) {
+        word.remove(0, 1);
+    }
+    // remove special chars at the end of the word
+    while (!word.isEmpty() && isSpecial(*(word.end() - 1))) {
+        word.remove(word.length() - 1, 1);
+    }
+
+    if (word.length() == 1 && isSpecialEncoded(word[0])) {
+        // encode special search with one special char
+        word = QUrl::toPercentEncoding(word);
+    }
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -87,70 +142,70 @@ bool MainWindow::event(QEvent *event)
     return QMainWindow::event(event);
 }
 
-/**
- * @brief ch is a special char
- */
-static bool isSpecial(const QChar &ch)
+void MainWindow::doSearch(const QString &str)
 {
-    static const char *chars = "~`!@#$%^&*()-_=+[{]};:'\"\\|,<.>/?* \t\n\r";
-    static const int len = strlen(chars);
+    QString word = str;
 
-    for (int i = 0; i < len; ++i) {
-        if (ch == chars[i]) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/**
- * @brief Refine search word
- */
-static void refineWord(QString &word)
-{
-    word = word.trimmed();
-    if (word.length() == 1) { // for one special char, do not remove it
-        return;
-    }
-
-    // remove special chars at the beginning of the word
-    while (!word.isEmpty() && isSpecial(*(word.begin()))) {
-        word.remove(0, 1);
-    }
-    // remove special chars at the end of the word
-    while (!word.isEmpty() && isSpecial(*(word.end() - 1))) {
-        word.remove(word.length() - 1, 1);
-    }
-}
-
-/**
- * @brief ch is a special char and should be encoded with percent mark('%')
- * This function is for http://3g.dict.cn, other dict websites may be diffent.
- */
-static inline bool isSpecialEncoded(const QChar &ch)
-{
-    if (ch == '#'
-            || ch == '&'
-            || ch == '+') {
-        return true;
-    }
-    return false;
-}
-
-void MainWindow::doSearch()
-{
-    QString word;
-
-    word = ui->wordLineEdit->text();
     refineWord(word);
 
     if (!word.isEmpty()) {
-        if (word.length() == 1 && isSpecialEncoded(word[0])) {
-            // encode special search with one special char
-            word = QUrl::toPercentEncoding(word);
-        }
         webview->load(QUrl::fromUserInput("http://3g.dict.cn/s.php?q=" + word));
     }
+}
+
+/**
+ * @brief Guess the word and do the search
+ * @param str Origin search word
+ * @param count Guess count(start from 0)
+ *
+ * @return true: can guess; false: can't guess.
+ */
+bool MainWindow::guessSearch(const QString &str, int count)
+{
+    switch (count) {
+    case 0:
+        return removeHyphenGuessSearch(str);
+
+        // TODO add more guess method here
+
+    default:
+        return false;
+    }
+}
+
+/**
+ * @brief Guess search wrod by removing hyphen.
+ * @param str Origin search word
+ * @return true: can guess; false: can't guess.
+ */
+inline bool MainWindow::removeHyphenGuessSearch(const QString &str)
+{
+    QString word = str;
+    int hyphen = word.indexOf('-');
+    int start;
+    int end;
+    int tmp;
+
+    if (hyphen >= 0) {
+        // find start end
+        tmp = hyphen - 1;
+        while (tmp >= 0 && word[tmp].isSpace()) {
+            --tmp;
+        }
+        start = tmp + 1;
+        // find end index
+        tmp = hyphen + 1;
+        while (tmp < word.size() && word[tmp].isSpace()) {
+            ++tmp;
+        }
+        end = tmp - 1;
+        // remove from start index to end index
+        word.remove(start, end - start + 1);
+        doSearch(word);
+        return true;
+
+    }
+    return false;
 }
 
 void MainWindow::slotShowToolTip()
@@ -173,7 +228,7 @@ void MainWindow::slotShowToolTip()
 void MainWindow::slotStartDefaultSearch()
 {
     m_searchReason = DefaultSearch;
-    doSearch();
+    doSearch(ui->wordLineEdit->text());
 }
 
 void MainWindow::slotStartPopupSearch()
@@ -186,7 +241,7 @@ void MainWindow::slotStartPopupSearch()
 
     ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));
     m_searchReason = PopupSearch;
-    doSearch();
+    doSearch(ui->wordLineEdit->text());
 }
 
 /**
@@ -194,35 +249,56 @@ void MainWindow::slotStartPopupSearch()
  */
 void MainWindow::slotSearchFinished(bool ok)
 {
+    static int count = 0; // guess count
+
     if (!searchResultStillUseful()) {
         return;
     }
 
     if (ok) { // search succeeded
-        switch (m_searchReason) {
-        case PopupSearch:
-            toolTipWidget->hide();
-        case SelectedSearch:
-            if (!this->isActiveWindow()) {
-                ensureWindowRegionVisible();
-                if (this->isHidden()) {
-                    this->show();
+        if (searchFinishedWithResult()) {
+            switch (m_searchReason) {
+            case PopupSearch:
+                toolTipWidget->hide();
+            case SelectedSearch:
+                if (!this->isActiveWindow()) {
+                    ensureWindowRegionVisible();
+                    if (this->isHidden()) {
+                        this->show();
+                    }
+                    this->activateWindow();
+                    this->raise();
                 }
-                this->activateWindow();
-                this->raise();
-            }
-            break;
+                break;
 
-        default:
-            break;
+            default:
+                break;
+            }
+            slotSelectWord();
+            // scroll to content
+            webview->page()->mainFrame()->evaluateJavaScript(
+                        "scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
+
+            count = 0;
+        } else { // search with empty result, guess the search word and try again
+            static const int MAX_GUESS_COUNT = 1;
+            if (count >= MAX_GUESS_COUNT) { // max guess count reached, stop guessing
+                notifySearchFailure();
+                count = 0;
+            } else { // guess
+                while (!guessSearch(ui->wordLineEdit->text(), count)) {
+                    if (count >= MAX_GUESS_COUNT) {
+                        notifySearchFailure();
+                        count = 0;
+                        return;
+                    }
+                    ++count;
+                }
+            }
         }
-        slotSelectWord();
-        // scroll to content
-        webview->page()->mainFrame()->evaluateJavaScript(
-                    "scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
     } else { // search failed
-        QToolTip::showText(QCursor::pos(), tr("Search failed! Please check your network."));
-        slotHideToolTipLater();
+        notifySearchFailure();
+        count = 0;
     }
 }
 
@@ -274,7 +350,7 @@ void MainWindow::slotStartSelectedSearch()
 {
     ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));
     m_searchReason = SelectedSearch;
-    doSearch();
+    doSearch(ui->wordLineEdit->text());
 }
 
 /**
@@ -489,6 +565,29 @@ bool MainWindow::searchResultStillUseful() const
     }
 
     return ret;
+}
+
+/**
+ * @brief Check whether search finished with result.
+ *
+ * @return Return false with empty result.
+ */
+bool MainWindow::searchFinishedWithResult() const
+{
+    QVariant var;
+
+    var = webview->page()->mainFrame()->evaluateJavaScript(
+                "document.querySelector(\"html body div.content h1\").innerHTML");
+    return !var.toString().isEmpty();
+}
+
+/**
+ * @brief Notify search failure
+ */
+inline void MainWindow::notifySearchFailure()
+{
+    QToolTip::showText(QCursor::pos(), tr("Search failed! Please check your network."));
+    slotHideToolTipLater();
 }
 
 ToolTipWidget::ToolTipWidget(QWidget *parent)
