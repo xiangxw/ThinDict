@@ -72,7 +72,7 @@ static void refineWord(QString &word)
 }
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+    QMainWindow(parent, Qt::Popup),
     ui(new Ui::MainWindow),
     m_searchReason(DefaultSearch)
 {
@@ -439,6 +439,9 @@ void MainWindow::createSystemTrayIcon()
             this, SLOT(slotSystemTrayActivated(QSystemTrayIcon::ActivationReason)));
 
     menu = new QMenu(this);
+    // show main window
+    menu->addAction(tr("Show &Main Window"),
+                    this, SLOT(slotToggleVisible()));
     // settings
     menu->addAction(QIcon(":/images/settings.svg"), tr("&Settings"),
                     settingDialog, SLOT(show()));

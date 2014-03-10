@@ -14,52 +14,57 @@
         <translation>搜索(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="196"/>
+        <location filename="../mainwindow.cpp" line="592"/>
         <source>Search failed! Please check your network.</source>
         <translation>搜索失败,请检查网络连接～</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="309"/>
+        <location filename="../mainwindow.cpp" line="413"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="311"/>
+        <location filename="../mainwindow.cpp" line="415"/>
         <source>Homepage</source>
         <translation>首页</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="315"/>
+        <location filename="../mainwindow.cpp" line="419"/>
         <source>Dict Source</source>
         <translation>词典来源</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="316"/>
+        <location filename="../mainwindow.cpp" line="420"/>
         <source>Dict.cn</source>
         <translation>Dict.cn</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="333"/>
+        <location filename="../mainwindow.cpp" line="437"/>
         <source>ThinDict, a lite dict program</source>
         <translation>ThinDict，Linux下简易的英汉词典</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="339"/>
+        <location filename="../mainwindow.cpp" line="443"/>
+        <source>Show &amp;Main Window</source>
+        <translation>显示主窗口(&amp;M)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="446"/>
         <source>&amp;Settings</source>
         <translation>配置(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="344"/>
+        <location filename="../mainwindow.cpp" line="451"/>
         <source>&amp;Popup Search</source>
-		<translation>开启/关闭划词翻译(&amp;P)</translation>
+        <translation>开启/关闭划词翻译(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="356"/>
+        <location filename="../mainwindow.cpp" line="463"/>
         <source>&amp;About</source>
         <translation>关于(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="359"/>
+        <location filename="../mainwindow.cpp" line="466"/>
         <source>&amp;Quit</source>
         <translation>退出(&amp;Q)</translation>
     </message>

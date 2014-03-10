@@ -16,7 +16,7 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
+    mainwindow.cpp \
     settingdialog.cpp \
     shortcutedit.cpp
 
