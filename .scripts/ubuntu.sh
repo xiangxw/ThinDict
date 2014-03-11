@@ -6,7 +6,7 @@ THINDICT_VERSION=$(awk 'NR == 1 {print substr($2, 2, index($2, "-") - 2)}' debia
 # for example: 0.1.1-1
 THINDICT_PACKAGE_VERSION=$(awk 'NR == 1 {print substr($2, 2, length($2) - 2)}' debian/changelog)
 # ubuntu series
-UBUNTU_SERIES=('precise' 'quantal' 'raring' 'saucy' 'trusty')
+UBUNTU_SERIES=('precise' 'quantal' 'saucy' 'trusty')
 # name
 NAME='xiangxw'
 # email
