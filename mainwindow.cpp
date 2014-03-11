@@ -262,6 +262,7 @@ void MainWindow::slotSearchFinished(bool ok)
                 toolTipWidget->hide();
             case SelectedSearch:
                 if (!this->isActiveWindow()) {
+                    this->setWindowFlags(Qt::Popup);
                     ensureWindowRegionVisible();
                     if (this->isHidden()) {
                         this->show();
@@ -334,6 +335,7 @@ void MainWindow::slotToggleVisible()
             this->hide(); // for multiple virtual desktop
         }
         moveToScreenCenter();
+        this->setWindowFlags(Qt::Window);
         this->show();
         this->activateWindow();
         this->raise();
@@ -547,6 +549,7 @@ void MainWindow::moveToScreenCenter()
     pos.setX(center.x() - size.width() / 2);
     pos.setY(center.y() - size.height() / 2);
     this->move(pos);
+    this->resize(size);
 }
 
 /**
