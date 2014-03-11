@@ -39,6 +39,6 @@ isEmpty(PREFIX) {
 target.path = $$PREFIX/bin
 desktopfile.files = thindict.desktop
 desktopfile.path = /usr/share/applications
-logofile.files = images/thindict.svg
+logofile.files = images/thindict.png
 logofile.path = /usr/share/pixmaps
 INSTALLS += target desktopfile logofile

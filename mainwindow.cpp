@@ -211,7 +211,7 @@ inline bool MainWindow::removeHyphenGuessSearch(const QString &str)
 void MainWindow::slotShowToolTip()
 {
     QPoint point = QCursor::pos();
-    static QPixmap pixmap(":/images/tooltip.svg");
+    static QPixmap pixmap(":/images/tooltip.png");
 
     if (QApplication::clipboard()->text(QClipboard::Selection).isEmpty()) {
         return;
@@ -435,7 +435,7 @@ void MainWindow::createSystemTrayIcon()
     QMenu *menu;
     QSettings settings;
 
-    systemTray = new QSystemTrayIcon(QIcon(":/images/thindict.svg"), this);
+    systemTray = new QSystemTrayIcon(QIcon(":/images/thindict.png"), this);
     systemTray->setToolTip(tr("ThinDict, a lite dict program"));
     connect(systemTray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(slotSystemTrayActivated(QSystemTrayIcon::ActivationReason)));
@@ -445,7 +445,7 @@ void MainWindow::createSystemTrayIcon()
     menu->addAction(tr("Show &Main Window"),
                     this, SLOT(slotToggleVisible()));
     // settings
-    menu->addAction(QIcon(":/images/settings.svg"), tr("&Settings"),
+    menu->addAction(QIcon(":/images/settings.png"), tr("&Settings"),
                     settingDialog, SLOT(show()));
     // popup search
     QAction *popupSearchToggleAction;
@@ -462,10 +462,10 @@ void MainWindow::createSystemTrayIcon()
             this, SLOT(slotPopupSearchToggled(bool)));
     menu->addAction(popupSearchToggleAction);
     // about
-    menu->addAction(QIcon(":/images/about.svg"), tr("&About"),
+    menu->addAction(QIcon(":/images/about.png"), tr("&About"),
                     this, SLOT(slotAbout()));
     // quit
-    menu->addAction(QIcon(":/images/quit.svg"), tr("&Quit"), qApp, SLOT(quit()));
+    menu->addAction(QIcon(":/images/quit.png"), tr("&Quit"), qApp, SLOT(quit()));
 
     systemTray->setContextMenu(menu);
     systemTray->show();

@@ -1,12 +1,12 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/thindict.svg</file>
-        <file>images/quit.svg</file>
+        <file>images/thindict.png</file>
+        <file>images/quit.png</file>
         <file>images/loading.gif</file>
-        <file>images/tooltip.svg</file>
+        <file>images/tooltip.png</file>
         <file>translations/zh_CN.qm</file>
         <file>thindict.desktop</file>
-        <file>images/settings.svg</file>
-        <file>images/about.svg</file>
+        <file>images/settings.png</file>
+        <file>images/about.png</file>
     </qresource>
 </RCC>

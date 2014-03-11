@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     a.installTranslator(&translator);
 
     // set window icon
-    a.setWindowIcon(QIcon(":/images/thindict.svg"));
+    a.setWindowIcon(QIcon(":/images/thindict.png"));
 
     // set application info for QSettings
     a.setOrganizationName("ThinDict");
