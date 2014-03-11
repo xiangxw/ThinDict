@@ -1,3 +1,9 @@
+thindict (0.1.20-1) stable; urgency=low
+
+  * support for Deepin Linux
+
+ -- a <a@a-xiang>  Tue, 11 Mar 2014 21:56:26 +0800
+
 thindict (0.1.19-1) stable; urgency=low
 
   * support for Ubuntu Unity
