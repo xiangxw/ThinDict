@@ -1,3 +1,9 @@
+thindict (0.1.19-1) stable; urgency=low
+
+  * support for Ubuntu Unity
+
+ -- a <a@a-xiang>  Tue, 11 Mar 2014 21:27:17 +0800
+
 thindict (0.1.18-1) stable; urgency=low
 
   * add guess search using removing hyphen method
