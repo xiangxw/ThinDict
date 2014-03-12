@@ -38,7 +38,6 @@ private slots:
     void slotSelectWord();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void slotToggleVisible();
-    void slotHideToolTipLater();
     void slotToggleVisibleShortcutChanged(const QKeySequence &key);
     void slotSearchSelectedShortcutChanged(const QKeySequence &key);
     void slotPopupSearchToggled(bool toggled);

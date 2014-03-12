@@ -108,7 +108,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(toolTipWidget, SIGNAL(enterToolTip()),
             toolTipWidget, SLOT(stopHiding()));
     connect(toolTipWidget, SIGNAL(leaveToolTip()),
-            this, SLOT(slotHideToolTipLater()));
+            toolTipWidget, SLOT(hide()));
     connect(webview, SIGNAL(loadFinished(bool)),
             this, SLOT(slotSearchFinished(bool)));
     connect(settingDialog, SIGNAL(toggleVisibleShortcutChanged(QKeySequence)),
@@ -222,7 +222,7 @@ void MainWindow::slotShowToolTip()
     toolTipWidget->move(point);
     toolTipWidget->setPixmap(pixmap);
     toolTipWidget->show();
-    slotHideToolTipLater();
+    toolTipWidget->hideLater(1500);
 }
 
 void MainWindow::slotStartDefaultSearch()
@@ -353,14 +353,6 @@ void MainWindow::slotStartSelectedSearch()
     ui->wordLineEdit->setText(QApplication::clipboard()->text(QClipboard::Selection));
     m_searchReason = SelectedSearch;
     doSearch(ui->wordLineEdit->text());
-}
-
-/**
- * @brief Hide tooltip later
- */
-void MainWindow::slotHideToolTipLater()
-{
-    toolTipWidget->hideLater(1500);
 }
 
 /**
@@ -561,7 +553,7 @@ bool MainWindow::searchResultStillUseful() const
 
     switch (m_searchReason) {
     case PopupSearch:
-        if (toolTipWidget->isHidden() || !toolTipWidget->underMouse()) {
+        if (toolTipWidget->isHidden()) {
             ret = false;
         }
         break;
@@ -593,7 +585,7 @@ bool MainWindow::searchFinishedWithResult() const
 inline void MainWindow::notifySearchFailure()
 {
     QToolTip::showText(QCursor::pos(), tr("Search failed! Please check your network."));
-    slotHideToolTipLater();
+    toolTipWidget->hideLater(1500);
 }
 
 ToolTipWidget::ToolTipWidget(QWidget *parent)
