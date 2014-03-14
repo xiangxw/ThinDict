@@ -1,3 +1,9 @@
+thindict (0.1.21-1) stable; urgency=low
+
+  * bug fix: hide tooltip widget when mouse leaves
+
+ -- a <a@a-xiang>  Fri, 14 Mar 2014 11:47:05 +0800
+
 thindict (0.1.20-1) stable; urgency=low
 
   * support for Deepin Linux
