@@ -1,32 +1,38 @@
+thindict (0.1.24-1) stable; urgency=low
+
+  * add .svg logo
+
+ -- xiangxw <xiangxw5689@126.com>  Wed, 19 Mar 2014 16:22:38 +0800
+
 thindict (0.1.23-1) stable; urgency=low
 
   * bug fix
 
- -- a <a@a-xiang>  Wed, 19 Mar 2014 15:24:09 +0800
+ -- xiangxw <xiangxw5689@126.com>  Wed, 19 Mar 2014 15:24:09 +0800
 
 thindict (0.1.22-1) stable; urgency=low
 
   * use phonon to play audio
 
- -- a <a@a-xiang>  Wed, 19 Mar 2014 15:02:53 +0800
+ -- xiangxw <xiangxw5689@126.com>  Wed, 19 Mar 2014 15:02:53 +0800
 
 thindict (0.1.21-1) stable; urgency=low
 
   * bug fix: hide tooltip widget when mouse leaves
 
- -- a <a@a-xiang>  Fri, 14 Mar 2014 11:47:05 +0800
+ -- xiangxw <xiangxw5689@126.com>  Fri, 14 Mar 2014 11:47:05 +0800
 
 thindict (0.1.20-1) stable; urgency=low
 
   * support for Deepin Linux
 
- -- a <a@a-xiang>  Tue, 11 Mar 2014 21:56:26 +0800
+ -- xiangxw <xiangxw5689@126.com>  Tue, 11 Mar 2014 21:56:26 +0800
 
 thindict (0.1.19-1) stable; urgency=low
 
   * support for Ubuntu Unity
 
- -- a <a@a-xiang>  Tue, 11 Mar 2014 21:27:17 +0800
+ -- xiangxw <xiangxw5689@126.com>  Tue, 11 Mar 2014 21:27:17 +0800
 
 thindict (0.1.18-1) stable; urgency=low
 

@@ -4,7 +4,6 @@ Name=ThinDict
 Name[zh_CN]=ThinDict
 GenericName=Dict Program
 GenericName[zh_CN]=词典程序
-X-GNOME-FullName=ThinDict Dict Program
 Comment=A lite dict program
 Comment[zh_CN]=Linux下简易的英汉词典
 TryExec=thindict
