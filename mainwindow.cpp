@@ -317,6 +317,7 @@ void MainWindow::slotSearchFinished(bool ok)
                     }
                     ++count;
                 }
+                ++count;
             }
         }
     } else { // search failed
