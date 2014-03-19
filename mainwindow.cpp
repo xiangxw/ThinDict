@@ -8,9 +8,11 @@
 #include <QClipboard>
 #include <QMovie>
 #include <QToolTip>
-#include <QxtGlobalShortcut>
 #include <QSettings>
 #include <QMessageBox>
+#include <QxtGlobalShortcut>
+#include <Phonon/AudioOutput>
+#include <Phonon/MediaObject>
 #include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -96,6 +98,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // create shortcuts
     createShortcuts();
 
+    // create audio player
+    createAudioPlayer();
+
     // do not quit on close
     this->setAttribute(Qt::WA_QuitOnClose, false);
 
@@ -120,6 +125,16 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+/**
+ * @brief Play audio
+ * @param src Source file
+ */
+void MainWindow::audioPlay(const QString &src)
+{
+    mediaObject->setCurrentSource(Phonon::MediaSource(QUrl(src)));
+    mediaObject->play();
 }
 
 bool MainWindow::event(QEvent *event)
@@ -279,6 +294,13 @@ void MainWindow::slotSearchFinished(bool ok)
             // scroll to content
             webview->page()->mainFrame()->evaluateJavaScript(
                         "scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
+            // new audioPlay function
+            webview->page()->mainFrame()->addToJavaScriptWindowObject("thindict", this);
+            webview->page()->mainFrame()->evaluateJavaScript(
+                        "audioPlay = function (obj) { "
+                        "   var src = \"http://audio.dict.cn/output.php?id=\" + obj.getAttribute(\"audio\");"
+                        "   thindict.audioPlay(src);"
+                        "};");
 
             count = 0;
         } else { // search with empty result, guess the search word and try again
@@ -501,6 +523,16 @@ void MainWindow::createShortcuts()
         connect(searchSelectedShortcut, SIGNAL(activated()),
                 this, SLOT(slotStartSelectedSearch()));
     }
+}
+
+/**
+ * @brief Create audio player
+ */
+void MainWindow::createAudioPlayer()
+{
+    mediaObject = new Phonon::MediaObject(this);
+    Phonon::AudioOutput *audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
+    Phonon::createPath(mediaObject, audioOutput);
 }
 
 /**

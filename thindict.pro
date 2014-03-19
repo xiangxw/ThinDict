@@ -5,7 +5,11 @@
 #-------------------------------------------------
 
 QT += core gui webkit
-greaterThan(QT_MAJOR_VERSION, 4): QT += webkitwidgets
+greaterThan(QT_MAJOR_VERSION, 4) {
+    QT += webkitwidgets
+} else {
+    QT += phonon
+}
 
 # libqxt
 CONFIG += qxt

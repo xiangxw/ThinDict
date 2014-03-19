@@ -14,6 +14,9 @@ class SettingDialog;
 class QxtGlobalShortcut;
 class QWebView;
 class QTimer;
+namespace Phonon {
+    class MediaObject;
+}
 
 class MainWindow : public QMainWindow
 {
@@ -25,6 +28,8 @@ public:
     QSize sizeHint() const {return QSize(400, 300);}
 
     enum SearchReason {DefaultSearch, PopupSearch, SelectedSearch};
+
+    Q_INVOKABLE void audioPlay(const QString &src);
 
 protected:
     virtual bool event(QEvent *event);
@@ -49,6 +54,7 @@ private:
     bool removeHyphenGuessSearch(const QString &str);
     void createSystemTrayIcon();
     void createShortcuts();
+    void createAudioPlayer();
     void ensureWindowRegionVisible();
     void moveToScreenCenter();
     bool searchResultStillUseful() const;
@@ -63,6 +69,7 @@ private:
     QxtGlobalShortcut *toggleVisibleShortcut;
     QxtGlobalShortcut *searchSelectedShortcut;
     SearchReason m_searchReason;
+    Phonon::MediaObject *mediaObject;
 };
 
 /**
