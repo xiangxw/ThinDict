@@ -1,3 +1,9 @@
+thindict (0.1.25-1) stable; urgency=low
+
+  * bug fix: no window icon in Lubuntu 13.10
+
+ -- xiangxw <xiangxw5689@126.com>  Wed, 19 Mar 2014 17:02:11 +0800
+
 thindict (0.1.24-1) stable; urgency=low
 
   * add .svg logo
