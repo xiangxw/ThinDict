@@ -359,6 +359,8 @@ void MainWindow::slotToggleVisible()
         }
         moveToScreenCenter();
         this->setWindowFlags(Qt::Window);
+        // set window icon after flags are changed
+        this->setWindowIcon(QIcon(":/images/thindict.png"));
         this->show();
         this->activateWindow();
         this->raise();
