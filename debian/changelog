@@ -1,3 +1,9 @@
+thindict (0.1.23-1) stable; urgency=low
+
+  * bug fix
+
+ -- a <a@a-xiang>  Wed, 19 Mar 2014 15:24:09 +0800
+
 thindict (0.1.22-1) stable; urgency=low
 
   * use phonon to play audio
