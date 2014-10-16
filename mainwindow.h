@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 #include <QLabel>
+#include <QUrl>
 
 namespace Ui {
 class MainWindow;
@@ -39,7 +40,7 @@ private slots:
     void slotStartDefaultSearch();
     void slotStartPopupSearch();
     void slotStartSelectedSearch();
-    void slotSearchFinished(bool ok);
+    void slotSearchProgress(int progress);
     void slotSelectWord();
     void slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void slotToggleVisible();
@@ -47,6 +48,7 @@ private slots:
     void slotSearchSelectedShortcutChanged(const QKeySequence &key);
     void slotPopupSearchToggled(bool toggled);
     void slotAbout();
+    void slotTimeout();
 
 private:
     void doSearch(const QString &str);
@@ -60,6 +62,7 @@ private:
     bool searchResultStillUseful() const;
     bool searchFinishedWithResult() const;
     void notifySearchFailure();
+    void scrollToTranslation();
 
     Ui::MainWindow *ui;
     QWebView *webview;
@@ -70,6 +73,7 @@ private:
     QxtGlobalShortcut *searchSelectedShortcut;
     SearchReason m_searchReason;
     Phonon::MediaObject *mediaObject;
+    QTimer *m_timer;
 };
 
 /**

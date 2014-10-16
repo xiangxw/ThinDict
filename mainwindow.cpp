@@ -104,6 +104,11 @@ MainWindow::MainWindow(QWidget *parent) :
     // do not quit on close
     this->setAttribute(Qt::WA_QuitOnClose, false);
 
+    // check for ad image loading
+    m_timer = new QTimer(this);
+    m_timer->setInterval(100);
+    m_timer->start();
+
     connect(ui->wordLineEdit, SIGNAL(returnPressed()),
             this, SLOT(slotStartDefaultSearch()));
     connect(ui->searchPushButton, SIGNAL(clicked()),
@@ -114,12 +119,14 @@ MainWindow::MainWindow(QWidget *parent) :
             toolTipWidget, SLOT(stopHiding()));
     connect(toolTipWidget, SIGNAL(leaveToolTip()),
             toolTipWidget, SLOT(hide()));
-    connect(webview, SIGNAL(loadFinished(bool)),
-            this, SLOT(slotSearchFinished(bool)));
+    connect(webview, SIGNAL(loadProgress(int)),
+            this, SLOT(slotSearchProgress(int)));
     connect(settingDialog, SIGNAL(toggleVisibleShortcutChanged(QKeySequence)),
             this, SLOT(slotToggleVisibleShortcutChanged(QKeySequence)));
     connect(settingDialog, SIGNAL(searchSelectedShortcutChanged(QKeySequence)),
             this, SLOT(slotSearchSelectedShortcutChanged(QKeySequence)));
+    connect(m_timer, SIGNAL(timeout()),
+            this, SLOT(slotTimeout()));
 }
 
 MainWindow::~MainWindow()
@@ -164,7 +171,8 @@ void MainWindow::doSearch(const QString &str)
     refineWord(word);
 
     if (!word.isEmpty()) {
-        webview->load(QUrl::fromUserInput("http://3g.dict.cn/s.php?q=" + word));
+        QUrl url = QUrl::fromUserInput("http://3g.dict.cn/s.php?q=" + word);
+        webview->load(url);
     }
 }
 
@@ -260,69 +268,42 @@ void MainWindow::slotStartPopupSearch()
 }
 
 /**
- * @brief Search finished slot
+ * @brief Search progress slot
  */
-void MainWindow::slotSearchFinished(bool ok)
+void MainWindow::slotSearchProgress(int )
 {
-    static int count = 0; // guess count
-
     if (!searchResultStillUseful()) {
         return;
     }
 
-    if (ok) { // search succeeded
-        if (searchFinishedWithResult()) {
-            switch (m_searchReason) {
-            case PopupSearch:
-                toolTipWidget->hide();
-            case SelectedSearch:
-                if (!this->isActiveWindow()) {
-                    this->setWindowFlags(Qt::Popup);
-                    ensureWindowRegionVisible();
-                    if (this->isHidden()) {
-                        this->show();
-                    }
-                    this->activateWindow();
-                    this->raise();
+    if (searchFinishedWithResult()) {
+        switch (m_searchReason) {
+        case PopupSearch:
+            toolTipWidget->hide();
+        case SelectedSearch:
+            if (!this->isActiveWindow()) {
+                this->setWindowFlags(Qt::Popup);
+                ensureWindowRegionVisible();
+                if (this->isHidden()) {
+                    this->show();
                 }
-                break;
-
-            default:
-                break;
+                this->activateWindow();
+                this->raise();
             }
-            slotSelectWord();
-            // scroll to content
-            webview->page()->mainFrame()->evaluateJavaScript(
-                        "scrollTo(0, document.querySelector(\"html body div.content h1\").getClientRects()[0].top)");
-            // new audioPlay function
-            webview->page()->mainFrame()->addToJavaScriptWindowObject("thindict", this);
-            webview->page()->mainFrame()->evaluateJavaScript(
-                        "audioPlay = function (obj) { "
-                        "   var src = \"http://audio.dict.cn/output.php?id=\" + obj.getAttribute(\"audio\");"
-                        "   thindict.audioPlay(src);"
-                        "};");
+            break;
 
-            count = 0;
-        } else { // search with empty result, guess the search word and try again
-            static const int MAX_GUESS_COUNT = 1;
-            if (count >= MAX_GUESS_COUNT) { // max guess count reached, stop guessing
-                notifySearchFailure();
-                count = 0;
-            } else { // guess
-                while (!guessSearch(ui->wordLineEdit->text(), count)) {
-                    if (count >= MAX_GUESS_COUNT) {
-                        notifySearchFailure();
-                        count = 0;
-                        return;
-                    }
-                    ++count;
-                }
-                ++count;
-            }
+        default:
+            break;
         }
-    } else { // search failed
-        notifySearchFailure();
-        count = 0;
+        slotSelectWord();
+        scrollToTranslation();
+        // new audioPlay function
+        webview->page()->mainFrame()->addToJavaScriptWindowObject("thindict", this);
+        webview->page()->mainFrame()->evaluateJavaScript(
+                    "audioPlay = function (obj) { "
+                    "   var src = \"http://audio.dict.cn/output.php?id=\" + obj.getAttribute(\"audio\");"
+                    "   thindict.audioPlay(src);"
+                    "};");
     }
 }
 
@@ -442,6 +423,14 @@ void MainWindow::slotAbout()
     messageBox->setAttribute(Qt::WA_QuitOnClose, false);
     messageBox->setWindowModality(Qt::NonModal);
     messageBox->show();
+}
+
+/**
+ * @brief Timer
+ */
+void MainWindow::slotTimeout()
+{
+    scrollToTranslation();
 }
 
 /**
@@ -637,6 +626,26 @@ ToolTipWidget::ToolTipWidget(QWidget *parent)
                         20.0, 20.0, Qt::RelativeSize);
     polygon = path.toFillPolygon().toPolygon();
     this->setMask(QRegion(polygon));
+}
+
+void MainWindow::scrollToTranslation()
+{
+    // scroll to content
+    QWebElement element;
+    int topOld, topNew;
+
+    if (!(this->isVisible())) {
+        return;
+    }
+    element = webview->page()->mainFrame()->findFirstElement("html body div.content h1");
+    if (element.isNull()) {
+        return;
+    }
+    topOld = webview->page()->mainFrame()->scrollBarValue(Qt::Vertical);
+    topNew = element.geometry().top();
+    if (topOld != topNew) {
+        webview->page()->mainFrame()->scroll(0, topNew - topOld);
+    }
 }
 
 /**
