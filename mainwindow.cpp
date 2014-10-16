@@ -87,6 +87,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // create web view
     webview = new QWebView(this);
     ui->resultScrollArea->setWidget(webview);
+    webview->installEventFilter(this);
 
     // create tooltip widget
     toolTipWidget = new ToolTipWidget(this);
@@ -171,6 +172,14 @@ bool MainWindow::event(QEvent *event)
     return QMainWindow::event(event);
 }
 
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if (obj == webview && event->type() == QEvent::Wheel) {
+        m_scrolled = true;
+    }
+    return QMainWindow::eventFilter(obj, event);
+}
+
 void MainWindow::doSearch(const QString &str)
 {
     QString word = str;
@@ -180,6 +189,7 @@ void MainWindow::doSearch(const QString &str)
     if (!word.isEmpty()) {
         QUrl url = QUrl::fromUserInput("http://3g.dict.cn/s.php?q=" + word);
         m_resultShowed = false;
+        m_scrolled = false;
         webview->load(url);
     }
 }
@@ -684,7 +694,7 @@ void MainWindow::scrollToTranslation()
     QWebElement element;
     int topOld, topNew;
 
-    if (!(this->isVisible())) {
+    if (!(this->isVisible()) || m_scrolled) {
         return;
     }
     element = webview->page()->mainFrame()->findFirstElement("html body div.content h1");

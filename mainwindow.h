@@ -38,6 +38,7 @@ public:
 
 protected:
     virtual bool event(QEvent *event);
+    virtual bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
     void slotShowToolTipWidget();
@@ -79,7 +80,8 @@ private:
     SearchReason m_searchReason;
     Phonon::MediaObject *mediaObject;
     QTimer *m_timer;
-    bool m_resultShowed ;
+    bool m_resultShowed;
+    bool m_scrolled;
 };
 
 /**
