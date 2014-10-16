@@ -1,0 +1,3 @@
+#!/bin/bash
+qmake PREFIX=/usr
+lrelease thindict.pro

@@ -1,0 +1,13 @@
+Source: thindict
+Section: education
+Priority: extra
+Maintainer: xiangxw <xiangxw5689@126.com>
+Build-Depends: debhelper (>= 8.0.0), libqt4-dev, libqtwebkit-dev, libqxt-dev, libphonon-dev, libx11-dev
+Standards-Version: 3.9.4
+Homepage: http://xiangxw.github.io/ThinDict/
+
+Package: thindict
+Architecture: any
+Depends: phonon-backend-vlc, ${shlibs:Depends}, ${misc:Depends}
+Description: A lite dict program
+ ThinDict is a lite dict program write with Qt.
