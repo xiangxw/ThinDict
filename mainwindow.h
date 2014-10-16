@@ -28,7 +28,11 @@ public:
     ~MainWindow();
     QSize sizeHint() const {return QSize(400, 300);}
 
-    enum SearchReason {DefaultSearch, PopupSearch, SelectedSearch};
+    enum SearchReason {
+        DefaultSearch, // input a word in ThinDict
+        PopupSearch, // select a word and hang over the tooltip widget
+        SelectedSearch // select a word and use hot key to search
+    };
 
     Q_INVOKABLE void audioPlay(const QString &src);
 
@@ -36,7 +40,7 @@ protected:
     virtual bool event(QEvent *event);
 
 private slots:
-    void slotShowToolTip();
+    void slotShowToolTipWidget();
     void slotStartDefaultSearch();
     void slotStartPopupSearch();
     void slotStartSelectedSearch();
@@ -63,6 +67,7 @@ private:
     bool searchFinishedWithResult() const;
     void notifySearchFailure();
     void scrollToTranslation();
+    void toggleVisible(bool alwayShow = false);
 
     Ui::MainWindow *ui;
     QWebView *webview;
@@ -74,6 +79,7 @@ private:
     SearchReason m_searchReason;
     Phonon::MediaObject *mediaObject;
     QTimer *m_timer;
+    bool m_resultShowed ;
 };
 
 /**

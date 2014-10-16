@@ -1,3 +1,6 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include "settingdialog.h"
 #include <QtWebKit>
 #include <QWebView>
 #include <QApplication>
@@ -14,9 +17,8 @@
 #include <Phonon/AudioOutput>
 #include <Phonon/MediaObject>
 #include <QDebug>
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "settingdialog.h"
+#include <QX11Info>
+#include <X11/Xlib.h>
 
 /**
  * @brief ch is a special char and should be encoded with percent mark('%')
@@ -74,9 +76,10 @@ static void refineWord(QString &word)
 }
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent, Qt::Popup),
+    QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_searchReason(DefaultSearch)
+    m_searchReason(DefaultSearch),
+    m_resultShowed(false)
 {
     // setup ui
     ui->setupUi(this);
@@ -103,6 +106,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // do not quit on close
     this->setAttribute(Qt::WA_QuitOnClose, false);
+    this->setWindowModality(Qt::ApplicationModal);
 
     // check for ad image loading
     m_timer = new QTimer(this);
@@ -146,20 +150,23 @@ void MainWindow::audioPlay(const QString &src)
 
 bool MainWindow::event(QEvent *event)
 {
-    if (event->type() == QEvent::WindowDeactivate) {
+    switch (event->type()) { // window deactivate event
+    case QEvent::WindowActivate:
+        slotSelectWord();
+        break;
+    case QEvent::WindowDeactivate:
         switch (m_searchReason) {
         case PopupSearch:
+        case SelectedSearch:
             this->hide();
             toolTipWidget->hide();
             break;
-
-        case SelectedSearch:
-            this->hide();
-            break;
-
         default:
             break;
         }
+        break;
+    default:
+        break;
     }
     return QMainWindow::event(event);
 }
@@ -172,6 +179,7 @@ void MainWindow::doSearch(const QString &str)
 
     if (!word.isEmpty()) {
         QUrl url = QUrl::fromUserInput("http://3g.dict.cn/s.php?q=" + word);
+        m_resultShowed = false;
         webview->load(url);
     }
 }
@@ -231,7 +239,7 @@ inline bool MainWindow::removeHyphenGuessSearch(const QString &str)
     return false;
 }
 
-void MainWindow::slotShowToolTip()
+void MainWindow::slotShowToolTipWidget()
 {
     QPoint point = QCursor::pos();
     static QPixmap pixmap(":/images/tooltip.png");
@@ -277,23 +285,19 @@ void MainWindow::slotSearchProgress(int )
     }
 
     if (searchFinishedWithResult()) {
-        switch (m_searchReason) {
-        case PopupSearch:
-            toolTipWidget->hide();
-        case SelectedSearch:
-            if (!this->isActiveWindow()) {
-                this->setWindowFlags(Qt::Popup);
+        if (!m_resultShowed) {
+            switch (m_searchReason) {
+            case PopupSearch:
+            case SelectedSearch:
+                toolTipWidget->hide();
+                toggleVisible(true);
                 ensureWindowRegionVisible();
-                if (this->isHidden()) {
-                    this->show();
-                }
-                this->activateWindow();
-                this->raise();
-            }
-            break;
+                break;
 
-        default:
-            break;
+            default:
+                break;
+            }
+            m_resultShowed = true;
         }
         slotSelectWord();
         scrollToTranslation();
@@ -323,32 +327,78 @@ void MainWindow::slotSelectWord()
 void MainWindow::slotSystemTrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger) {
-        slotToggleVisible();
+        QTimer::singleShot(0, this, SLOT(slotToggleVisible()));
     }
 }
 
 /**
- * @brief Toggle visible
+ * @brief Toggle visible.
  */
 void MainWindow::slotToggleVisible()
 {
-    if (this->isActiveWindow()) { // active
-        this->hide();
-    } else { // not active
-        if (!this->isHidden()) { // not hidden
-            this->hide(); // for multiple virtual desktop
-        }
-        moveToScreenCenter();
-        this->setWindowFlags(Qt::Window);
-        // set window icon after flags are changed
-        this->setWindowIcon(QIcon(":/images/thindict.png"));
+    m_searchReason = DefaultSearch;
+    toggleVisible();
+}
+
+/**
+ * @brief Toggle visible. From GoldenDict.
+ */
+void MainWindow::toggleVisible(bool alwayShow)
+{
+    bool shown = false;
+
+    if (!(this->isVisible())) {
         this->show();
+        qApp->setActiveWindow(this);
         this->activateWindow();
         this->raise();
-        slotSelectWord();
+        shown = true;
+    } else if (this->isMinimized()) {
+        this->showNormal();
+        this->activateWindow();
+        this->raise();
+        shown = true;
+    } else if (!(this->isActiveWindow())) {
+        this->activateWindow();
+        this->raise();
+        shown = true;
+    } else if (!alwayShow){
+        hide();
     }
 
-    m_searchReason = DefaultSearch;
+    if ( shown )
+    {
+        Window wh = 0;
+        int rev = 0;
+        XGetInputFocus( QX11Info::display(), &wh, &rev );
+        if(wh != ui->wordLineEdit->internalWinId())
+        {
+            QPoint p( 1, 1 );
+            mapToGlobal( p );
+            XEvent event;
+            memset( &event, 0, sizeof( event) );
+            event.type = ButtonPress;
+            event.xbutton.x = 1;
+            event.xbutton.y = 1;
+            event.xbutton.x_root = p.x();
+            event.xbutton.y_root = p.y();
+            event.xbutton.window = internalWinId();
+            event.xbutton.root = QX11Info::appRootWindow( QX11Info::appScreen() );
+            event.xbutton.state = Button1Mask;
+            event.xbutton.button = Button1;
+            event.xbutton.same_screen = true;
+            event.xbutton.time = CurrentTime;
+
+            XSendEvent( QX11Info::display(), internalWinId(), true, 0xfff, &event );
+            XFlush( QX11Info::display() );
+            event.type = ButtonRelease;
+            XSendEvent( QX11Info::display(), internalWinId(), true, 0xfff, &event );
+            XFlush( QX11Info::display() );
+        }
+    }
+
+    moveToScreenCenter();
+    slotSelectWord();
 }
 
 /**
@@ -384,10 +434,10 @@ void MainWindow::slotPopupSearchToggled(bool toggled)
     settings.setValue("PopupSearchEnabled", toggled);
     if (toggled) {
         connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
-                this, SLOT(slotShowToolTip()));
+                this, SLOT(slotShowToolTipWidget()));
     } else {
         disconnect(QApplication::clipboard(), SIGNAL(selectionChanged()),
-                   this, SLOT(slotShowToolTip()));
+                   this, SLOT(slotShowToolTipWidget()));
     }
 }
 
@@ -461,7 +511,7 @@ void MainWindow::createSystemTrayIcon()
     popupSearchEnabled = settings.value("PopupSearchEnabled", "true").toBool();
     if (popupSearchEnabled) {
         connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
-                this, SLOT(slotShowToolTip()));
+                this, SLOT(slotShowToolTipWidget()));
     }
     popupSearchToggleAction->setChecked(popupSearchEnabled);
     connect(popupSearchToggleAction, SIGNAL(toggled(bool)),

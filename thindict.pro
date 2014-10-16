@@ -15,6 +15,9 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 CONFIG += qxt
 QXT += core gui
 
+# X11
+LIBS += -lX11
+
 TARGET = thindict
 TEMPLATE = app
 
