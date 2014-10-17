@@ -1,3 +1,10 @@
+thindict (0.2.1-1) stable; urgency=medium
+
+  * faster first search
+  * open links with external web browser
+
+ -- xiangxw <xiangxw5689@126.com>  Fri, 17 Oct 2014 16:10:11 +0800
+
 thindict (0.2.0-1) stable; urgency=medium
 
   * faster search speed, more stable
