@@ -3,41 +3,44 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
     <title>ThinDict by xiangxw</title>
   </head>
 
   <body>
+    <div id="container">
+      <div class="inner">
 
-    <header>
-      <div class="container">
-        <h1>ThinDict</h1>
-        <h2>Linux下简易的英汉词典</h2>
+        <header>
+          <h1>ThinDict</h1>
+          <h2>Linux下简易的英汉词典</h2>
+        </header>
 
-        <section id="downloads">
-          <a href="https://github.com/xiangxw/ThinDict/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/xiangxw/ThinDict/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/xiangxw/ThinDict" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/xiangxw/ThinDict/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/xiangxw/ThinDict/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/xiangxw/ThinDict" id="view-on-github" class="button"><span>View on GitHub</span></a>
         </section>
-      </div>
-    </header>
 
-    <div class="container">
-      <section id="main_content">
-        <h2>
+        <hr>
+
+        <section id="main_content">
+          <h2>
 <a name="%E6%88%AA%E5%9B%BE" class="anchor" href="#%E6%88%AA%E5%9B%BE"><span class="octicon octicon-link"></span></a>截图</h2>
 
-<p><img src="http://ubuntuone.com/6kIBTINvbaHqFbzzXjnGEM" alt="ThinDict"></p>
+<p><img src="https://jianguoyun.com/c/tblv2/CNz7FxIgkCrYLU8wFouxQRm6v_iCwKxN1jMeY-vy86LLfvRrebI/l3B4qZF-srM/l" alt="ThinDict"></p>
 
 <h2>
 <a name="%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95" class="anchor" href="#%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95"><span class="octicon octicon-link"></span></a>安装方法</h2>
 
 <h4>
-<a name="ubuntu%E4%B8%8B%E6%94%AF%E6%8C%81%E7%9A%84%E7%89%88%E6%9C%AC%E4%B8%BA1204-1310-1404" class="anchor" href="#ubuntu%E4%B8%8B%E6%94%AF%E6%8C%81%E7%9A%84%E7%89%88%E6%9C%AC%E4%B8%BA1204-1310-1404"><span class="octicon octicon-link"></span></a>ubuntu下（支持的版本为12.04, 13.10, 14.04）：</h4>
+<a name="ubuntu%E4%B8%8B%E6%94%AF%E6%8C%81%E7%9A%84%E7%89%88%E6%9C%AC%E4%B8%BA1204-1404-1410" class="anchor" href="#ubuntu%E4%B8%8B%E6%94%AF%E6%8C%81%E7%9A%84%E7%89%88%E6%9C%AC%E4%B8%BA1204-1404-1410"><span class="octicon octicon-link"></span></a>ubuntu下（支持的版本为12.04, 14.04, 14.10）：</h4>
 
 <pre><code>    sudo apt-add-repository -y ppa:xiangxw5689/thindict
     sudo apt-get update
@@ -50,41 +53,57 @@
 <a name="%E5%85%B6%E4%BB%96linux%E5%8F%91%E8%A1%8C%E7%89%88%E5%8F%AF%E4%BB%A5%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85" class="anchor" href="#%E5%85%B6%E4%BB%96linux%E5%8F%91%E8%A1%8C%E7%89%88%E5%8F%AF%E4%BB%A5%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85"><span class="octicon octicon-link"></span></a>其他Linux发行版可以编译安装：</h4>
 
 <ul>
-<li>安装依赖库。依赖qt4, qtwebkit, phonon以及qxt，在Debian/Ubuntu下安装命令为：</li>
-</ul><pre><code>    sudo apt-get install libqt4-dev libqtwebkit-dev libphonon-dev phonon-backend-vlc libqxt-dev
+<li>安装依赖库。依赖qt4, qtwebkit, phonon, x11以及qxt，在Debian/Ubuntu下安装命令为：</li>
+</ul>
+
+<pre><code>    sudo apt-get install libqt4-dev libqtwebkit-dev libphonon-dev phonon-backend-vlc libx11-dev libqxt-dev
 </code></pre>
 
 <ul>
 <li>执行qmake</li>
-</ul><pre><code>    qmake PREFIX=/usr
+</ul>
+
+<pre><code>    qmake PREFIX=/usr
 </code></pre>
 
 <ul>
 <li>生成翻译文件</li>
-</ul><pre><code>    lrelease thindict.pro
+</ul>
+
+<pre><code>    lrelease thindict.pro
 </code></pre>
 
 <ul>
 <li>编译</li>
-</ul><pre><code>    make
+</ul>
+
+<pre><code>    make
 </code></pre>
 
 <ul>
 <li>获取root权限，并安装，在Debian/Ubuntu下命令为：</li>
-</ul><pre><code>    sudo make install
+</ul>
+
+<pre><code>    sudo make install
 </code></pre>
 
 <ul>
 <li>卸载。进入源代码目录执行：<code>qmake PREFIX=/usr</code>，然后获取root权限执行<code>make uninstall</code>。在Debian/Ubuntu下命令为：</li>
-</ul><pre><code>    qmake PREFIX=/usr
+</ul>
+
+<pre><code>    qmake PREFIX=/usr
     sudo make uninstall
 </code></pre>
 
 <p><em><strong>欢迎其他Linux发行版用户提供打包，并添加到该安装说明中～</strong></em></p>
-      </section>
-    </div>
+        </section>
 
-              <script type="text/javascript">
+        <footer>
+          ThinDict is maintained by <a href="https://github.com/xiangxw">xiangxw</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+                  <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -95,5 +114,7 @@
             } catch(err) {}
           </script>
 
+      </div>
+    </div>
   </body>
 </html>
