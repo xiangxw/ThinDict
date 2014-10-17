@@ -91,6 +91,11 @@ MainWindow::MainWindow(QWidget *parent) :
     webview->installEventFilter(this);
     webview->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
+    // thindict cache
+    QUrl url = QUrl::fromUserInput("http://3g.dict.cn/s.php?q=thindict_cache");
+    webview->load(url);
+    m_cache = true;
+
     // create tooltip widget
     toolTipWidget = new ToolTipWidget(this);
 
@@ -194,6 +199,7 @@ void MainWindow::doSearch(const QString &str)
         QUrl url = QUrl::fromUserInput("http://3g.dict.cn/s.php?q=" + word);
         m_resultShowed = false;
         m_scrolled = false;
+        m_cache = false;
         webview->load(url);
     }
 }
@@ -294,7 +300,7 @@ void MainWindow::slotStartPopupSearch()
  */
 void MainWindow::slotSearchProgress(int )
 {
-    if (!searchResultStillUseful()) {
+    if (!searchResultStillUseful() || m_cache) {
         return;
     }
 

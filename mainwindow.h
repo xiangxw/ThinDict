@@ -83,6 +83,7 @@ private:
     QTimer *m_timer;
     bool m_resultShowed;
     bool m_scrolled;
+    bool m_cache;
 };
 
 /**
