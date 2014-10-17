@@ -200,6 +200,8 @@ void MainWindow::doSearch(const QString &str)
         m_resultShowed = false;
         m_scrolled = false;
         m_cache = false;
+        webview->stop();
+        webview->setHtml(tr("Loading..."));
         webview->load(url);
     }
 }
@@ -310,8 +312,10 @@ void MainWindow::slotSearchProgress(int )
             case PopupSearch:
             case SelectedSearch:
                 toolTipWidget->hide();
-                toggleVisible(true);
-                ensureWindowRegionVisible();
+                if (qApp->activeWindow() != this) {
+                    toggleVisible(true);
+                    ensureWindowRegionVisible();
+                }
                 break;
 
             default:
