@@ -19,6 +19,7 @@
 #include <QDebug>
 #include <QX11Info>
 #include <X11/Xlib.h>
+#include <QDesktopServices>
 
 /**
  * @brief ch is a special char and should be encoded with percent mark('%')
@@ -88,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent) :
     webview = new QWebView(this);
     ui->resultScrollArea->setWidget(webview);
     webview->installEventFilter(this);
+    webview->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
     // create tooltip widget
     toolTipWidget = new ToolTipWidget(this);
@@ -132,6 +134,8 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(slotSearchSelectedShortcutChanged(QKeySequence)));
     connect(m_timer, SIGNAL(timeout()),
             this, SLOT(slotTimeout()));
+    connect(webview, SIGNAL(linkClicked(QUrl)),
+            this, SLOT(slotLinkClicked(QUrl)));
 }
 
 MainWindow::~MainWindow()
@@ -491,6 +495,15 @@ void MainWindow::slotAbout()
 void MainWindow::slotTimeout()
 {
     scrollToTranslation();
+}
+
+
+/**
+ * @brief Link clicked.
+ */
+void MainWindow::slotLinkClicked(const QUrl &url)
+{
+    QDesktopServices::openUrl(url);
 }
 
 /**

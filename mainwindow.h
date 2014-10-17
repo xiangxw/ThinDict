@@ -54,6 +54,7 @@ private slots:
     void slotPopupSearchToggled(bool toggled);
     void slotAbout();
     void slotTimeout();
+    void slotLinkClicked(const QUrl &url);
 
 private:
     void doSearch(const QString &str);
