@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     // set application info for QSettings
     a.setOrganizationName("ThinDict");
     a.setApplicationName("thindict");
-    a.setApplicationVersion("0.2.1");
+    a.setApplicationVersion("0.2.2");
 
     // create window
     MainWindow w;
