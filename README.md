@@ -2,7 +2,7 @@
 ![ThinDict](http://ubuntuone.com/6kIBTINvbaHqFbzzXjnGEM)
 
 ## 安装方法
-#### ubuntu下（支持的版本为12.04, 13.10, 14.04）：
+#### ubuntu下（支持的版本为12.04, 14.04, 14.10）：
 
 ```
     sudo apt-add-repository -y ppa:xiangxw5689/thindict
@@ -14,10 +14,10 @@
 
 #### 其他Linux发行版可以编译安装：
 
-* 安装依赖库。依赖qt4, qtwebkit, phonon以及qxt，在Debian/Ubuntu下安装命令为：
+* 安装依赖库。依赖qt4, qtwebkit, phonon, x11以及qxt，在Debian/Ubuntu下安装命令为：
 
 ```
-    sudo apt-get install libqt4-dev libqtwebkit-dev libphonon-dev phonon-backend-vlc libqxt-dev
+    sudo apt-get install libqt4-dev libqtwebkit-dev libphonon-dev phonon-backend-vlc libx11-dev libqxt-dev
 ```
     
 * 执行qmake
