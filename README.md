@@ -1,5 +1,5 @@
 ## 截图
-![ThinDict](http://ubuntuone.com/6kIBTINvbaHqFbzzXjnGEM)
+![ThinDict](https://jianguoyun.com/c/tblv2/CNz7FxIgkCrYLU8wFouxQRm6v_iCwKxN1jMeY-vy86LLfvRrebI/l3B4qZF-srM/l)
 
 ## 安装方法
 #### ubuntu下（支持的版本为12.04, 14.04, 14.10）：
